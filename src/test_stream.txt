@@ -1,1 +1,0 @@
-Test executed with success.

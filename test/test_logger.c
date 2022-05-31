@@ -50,6 +50,11 @@ CuSuite *BasicSuite()
     return suite;
 }
 
+static void cleanUp()
+{
+    remove("test_stream.txt");
+}
+
 
 void testRun()
 {
@@ -63,4 +68,6 @@ void testRun()
     CuSuiteSummary(suite,output);
     CuSuiteDetails(suite,output);
     printf("%s\n",output->buffer);
+
+    cleanUp();    
 }
