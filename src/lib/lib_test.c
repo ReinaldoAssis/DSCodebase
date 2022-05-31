@@ -7,3 +7,8 @@ int helloworld()
     return 42;
 }
 
+int mod(int a, int b)
+{
+    return a%b;
+}
+

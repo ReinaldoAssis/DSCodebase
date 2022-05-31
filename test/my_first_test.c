@@ -4,7 +4,7 @@
 void test_helloworld(CuTest *tc)
 {
     int resp = helloworld();
-    int expected = 41;
+    int expected = 42;
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado em helloworld.",expected,resp);
 }
 
