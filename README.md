@@ -1,3 +1,5 @@
-## Under construction, come back later :)
+<div align="center">
+https://img.shields.io/tokei/lines/github/reinaldoassis/dscodebase?color=blueviolet&style=for-the-badge
+</div>
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=reinaldoassis&repo=dscodebase)](https://github.com/reinaldoassis/dscodebase)
+## Under construction, come back later :)
