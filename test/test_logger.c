@@ -31,7 +31,7 @@ void test_criar_e_escrever_stream(CuTest *tc)
 void test_criar_stream_null(CuTest *tc)
 {
     bool resp = false;
-    criar_stream(NULL,&resp);
+    FILE *f = criar_stream(NULL,&resp);
     CuAssertIntEquals_Msg(tc,"Error, test_criar_stream_null: resultado inesperado.",false,resp);
 }
 
@@ -46,7 +46,7 @@ CuSuite *BasicSuite()
     CuSuite *suite = CuSuiteNew();
     SUITE_ADD_TEST(suite,test_criar_e_escrever_stream);
     SUITE_ADD_TEST(suite,test_criar_stream_null);
-    //SUITE_ADD_TEST(suite,test_escrever_em_stream_null);
+    SUITE_ADD_TEST(suite,test_escrever_em_stream_null);
     return suite;
 }
 
