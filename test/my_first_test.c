@@ -1,15 +1,29 @@
-#include "./unity/src/unity.h"
 #include "../src/lib/lib_test.h"
+#include "./framework/CuTest.h"
 
-//obrigatório
-void setUp(void)
-{}
-
-//obrigatório
-void tearDown(void)
-{}
-
-void main()
+void test_helloworld(CuTest *tc)
 {
-    TEST_ASSERT_MESSAGE(helloworld() == 42, "Error, resposta inesperada de helloworld.");
+    int resp = helloworld();
+    int expected = 41;
+    CuAssertIntEquals_Msg(tc,"Error, valor inesperado em helloworld.",expected,resp);
+}
+
+CuSuite *BasicSuite()
+{
+    CuSuite *suite = CuSuiteNew();
+    SUITE_ADD_TEST(suite,test_helloworld);
+    return suite;
+}
+
+void testRun()
+{
+    CuString *output = CuStringNew();
+    CuSuite *suite = CuSuiteNew();
+
+    CuSuiteAddSuite(suite,BasicSuite());
+
+    CuSuiteRun(suite);
+    CuSuiteSummary(suite,output);
+    CuSuiteDetails(suite,output);
+    printf("%s\n",output->buffer);
 }
