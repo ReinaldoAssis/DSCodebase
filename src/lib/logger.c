@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-void* escrever_str(FILE *f, char *msg)
+bool escrever_str(FILE *f, char *msg)
 {
+    if(f == NULL) return false;
     if(msg == NULL || msg[0] == '\0') return false;
     
     fprintf(f,msg);
@@ -11,7 +12,14 @@ void* escrever_str(FILE *f, char *msg)
 
 FILE *criar_stream(char *name, bool **success)
 {
+    if(name == NULL)
+    {
+        if(success != NULL) *success = false;
+        return NULL;
+    }
+    
     FILE *f = fopen(name,"w");
+
     if(f == NULL)
     {
         if(success != NULL)

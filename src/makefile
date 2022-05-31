@@ -1,5 +1,5 @@
 all:
-	gcc -Wall ../test/my_first_test.c ../test/framework/*.c lib/*.c main.c -o program
+	gcc -Wall ../test/*.c ../test/framework/*.c lib/*.c main.c -o program
 
 clean:
 	rm -rf program
