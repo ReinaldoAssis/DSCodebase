@@ -12,7 +12,8 @@ int main(int argc, char *argv[])
     int n2 = atoi(argv[2]);
     
     FILE *f = criar_stream("output.txt",NULL);
-    char msg[20] = "oi oi\n";
+    char msg[20];
+    sprintf(msg,"%d mod %d = %d\n",n1,n2,mod(n1,n2));
     escrever_str(f,msg);
     encerrar_stream(f);
 

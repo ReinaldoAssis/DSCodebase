@@ -3,7 +3,7 @@
 
 void* escrever_str(FILE *f, char *msg)
 {
-    if(msg == NULL) return false;
+    if(msg == NULL || msg[0] == '\0') return false;
     
     fprintf(f,msg);
     return true;
