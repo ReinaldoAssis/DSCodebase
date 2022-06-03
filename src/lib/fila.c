@@ -56,3 +56,30 @@ queueItem* dequeue_sh(priorityQueue *fila)
 
 //=================== Fila com heap ========================
 
+heapQueue* newHeapQueue()
+{
+    heapQueue *heap = (heapQueue *) malloc(sizeof(heapQueue));
+    heap->size = 0;
+    return heap;
+}
+
+int get_parent_index(heapQueue *heap, int i)
+{
+    return i/2;
+}
+
+int get_left_index(heapQueue *heap, int i)
+{
+    return 2*i;
+}
+
+int get_right_index(heapQueue *heap, int i)
+{
+    return 2*i+1;
+}
+
+int item_of(heapQueue *heap, int i)
+{
+    return heap->data[i];
+}
+
