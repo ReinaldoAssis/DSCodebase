@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "lib/lib_test.h"
 #include "../test/global_tests.h"
 #include "lib/logger.h"
 
@@ -11,18 +10,15 @@ void routine(bool debug, int argc, char *argv[])
 {
     if(debug)
     {
-        testRun();
+        //testRun();
+        test_fila_run();
     }
     else
     {
         int n1 = atoi(argv[1]);
         int n2 = atoi(argv[2]);
     
-        FILE *f = criar_stream("output.txt",NULL);
-        char msg[20];
-        sprintf(msg,"%d mod %d = %d\n",n1,n2,mod(n1,n2));
-        escrever_str(f,msg);
-        encerrar_stream(f);
+        
     }
 }
 
