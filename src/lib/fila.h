@@ -17,7 +17,7 @@ typedef struct priorityQueue
 priorityQueue *newPriorityQueue();
 
 //enqueue na fila sem heap
-void enqueue_sh(priorityQueue *fila, int v, int p);
+void enqueue_sh(priorityQueue **fila, int v, int p);
 
 queueItem* dequeue_sh(priorityQueue *fila);
 

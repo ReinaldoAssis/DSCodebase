@@ -14,23 +14,23 @@ void test_new_queue_sh(CuTest *tc)
 void test_enqueue_sh(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
-    enqueue_sh(fila,10,1);
+    enqueue_sh(&fila,10,1);
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",10,fila->head->value);
 }
 
 void test_enqueue_sh_multiple(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
-    enqueue_sh(fila,10,10);
-    enqueue_sh(fila,24,2);
-    enqueue_sh(fila,3,3);
-    CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",10,fila->head->value);
+    enqueue_sh(&fila,10,10);
+    enqueue_sh(&fila,3,3);
+    enqueue_sh(&fila,24,20);
+    CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",24,fila->head->value);
 }
 
 void test_dequeue_sh(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
-    enqueue_sh(fila,10,1);
+    enqueue_sh(&fila,10,1);
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",10,dequeue_sh(fila)->value);
 
 }

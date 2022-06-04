@@ -11,11 +11,15 @@ priorityQueue *newPriorityQueue()
     return fila;
 }
 
-void enqueue_sh(priorityQueue *fila, int v, int p)
+void enqueue_sh(priorityQueue **filapt, int v, int p)
 {
+    priorityQueue *fila = *filapt;
+
     queueItem *item = (queueItem *)malloc(sizeof(queueItem));
     item->value = v;
     item->priority = p;
+
+    printf("adding %d\n",v);
 
     if(fila->head == NULL)
     {
@@ -23,14 +27,13 @@ void enqueue_sh(priorityQueue *fila, int v, int p)
         return;
     }
 
-    if (fila->head != NULL || (p > fila->head->priority))
+    if (fila->head != NULL && (p > fila->head->priority))
     {
         item->next = fila->head;
         fila->head = item;
     }
     else
     {
-
         queueItem *current = fila->head;
         while(current->next != NULL && current->next->priority > p)
             current = current->next;
