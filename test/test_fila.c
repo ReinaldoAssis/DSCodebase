@@ -59,34 +59,35 @@ void test_enqueue_heap_multiple(CuTest *tc)
 {
     heapQueue *heap = newHeapQueue();
     enqueue_heap(heap,1);
-    enqueue_heap(heap,2);
     enqueue_heap(heap,3);
-    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",3,heap->data[3]);
+    enqueue_heap(heap,2);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",3,heap->data[1]);
 }
 
-void test_max_heapify()
+void test_dequeue_heap_multiple(CuTest *tc)
 {
     heapQueue *heap = newHeapQueue();
     enqueue_heap(heap,1);
-    enqueue_heap(heap,2);
     enqueue_heap(heap,3);
+    enqueue_heap(heap,2);
     enqueue_heap(heap,4);
     enqueue_heap(heap,5);
 
     for(int i=0; i<=heap->size; i++)
-        printf("%d|%d ",i,heap->data[i]);
+        printf("%d(%d) ",i,heap->data[i]);
 
     printf("\n");
 
-    max_heapify(heap,1);
+    int resp = dequeue_heap(heap);
 
     for(int i=0; i<=heap->size; i++)
-        printf("%d|%d ",i,heap->data[i]);
+        printf("%d(%d) ",i,heap->data[i]);
 
     printf("\n");
 
-
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",5,resp);
 }
+
 
 CuSuite *Test_Fila_Sh()
 {
@@ -99,6 +100,7 @@ CuSuite *Test_Fila_Sh()
     SUITE_ADD_TEST(suite,test_enqueue_heap);
     SUITE_ADD_TEST(suite,test_swap);
     SUITE_ADD_TEST(suite,test_enqueue_heap_multiple);
+    SUITE_ADD_TEST(suite,test_dequeue_heap_multiple);
     return suite;
 }
 
@@ -114,7 +116,5 @@ void test_fila_run()
     CuSuiteSummary(suite,output);
     CuSuiteDetails(suite,output);
     printf("%s\n",output->buffer);
-
-    test_max_heapify();
 
 }

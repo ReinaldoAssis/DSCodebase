@@ -109,7 +109,12 @@ void enqueue_heap(heapQueue *heap, int item)
         while (parent_index >= 1 &&
         heap->data[key_index] > heap->data[parent_index]) {
 
-            swap(&heap->data[key_index], &heap->data[parent_index]);
+            //a função swap estava se comportando de alguma forma errada
+            //fazendo o swap 'manualmente' aqui dentro da função resolveu o problema
+            //swap(&heap->data[key_index], &heap->data[parent_index]);
+            int aux = heap->data[key_index];
+            heap->data[key_index] = heap->data[parent_index];
+            heap->data[parent_index] = aux;
             key_index = parent_index;
             parent_index = get_parent_index(heap, key_index);
 
@@ -117,20 +122,6 @@ void enqueue_heap(heapQueue *heap, int item)
     }
 }
 
-// int dequeue(heapQueue *heap)
-// {
-//     if (heap->size <= 0) {
-//         printf("Heap underflow!\n");
-//         return -1;
-//     }
-    
-//     int item = heap->data[1];
-//     heap->data[1] = heap->data[heap->size];
-//     heap->size--;
-//     max_heapify(heap, 1);
-//     return item;
-   
-// }
 
 void max_heapify(heapQueue *heap, int i)
 {
@@ -150,7 +141,28 @@ void max_heapify(heapQueue *heap, int i)
     
     if (heap->data[i] != heap->data[largest]) 
     {
-        swap(&heap->data[i], &heap->data[largest]);
+        //swap(&heap->data[i], &heap->data[largest]);
+        int aux = heap->data[i];
+        heap->data[i] = heap->data[largest];
+        heap->data[largest] = aux;
         max_heapify(heap, largest);
     }
+}
+
+int dequeue_heap(heapQueue *heap)
+{
+    if (heap->size <= 0) {
+        printf("Heap underflow!\n");
+        return -1;
+    }
+    
+    int item = heap->data[1];
+    heap->data[1] = heap->data[heap->size];
+    heap->size--;
+
+    // printf("Max heapify em %d\n",heap->data[1]);
+
+    max_heapify(heap, 1);
+    return item;
+   
 }
