@@ -14,23 +14,23 @@ void test_new_queue_sh(CuTest *tc)
 void test_enqueue_sh(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
-    enqueue_sh(&fila,10,1);
+    enqueue_sh(&fila,10,1,NULL);
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",10,fila->head->value);
 }
 
 void test_enqueue_sh_multiple(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
-    enqueue_sh(&fila,10,10);
-    enqueue_sh(&fila,3,3);
-    enqueue_sh(&fila,24,20);
+    enqueue_sh(&fila,10,10,NULL);
+    enqueue_sh(&fila,3,3,NULL);
+    enqueue_sh(&fila,24,20,NULL);
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",24,fila->head->value);
 }
 
 void test_dequeue_sh(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
-    enqueue_sh(&fila,10,1);
+    enqueue_sh(&fila,10,1,NULL);
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",10,dequeue_sh(fila)->value);
 
 }
@@ -51,27 +51,27 @@ void test_swap(CuTest *tc)
 void test_enqueue_heap(CuTest *tc)
 {
     heapQueue *heap = newHeapQueue();
-    enqueue_heap(heap,10);
+    enqueue_heap(heap,10,NULL);
     CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",10,item_of(heap,1));
 }
 
 void test_enqueue_heap_multiple(CuTest *tc)
 {
     heapQueue *heap = newHeapQueue();
-    enqueue_heap(heap,1);
-    enqueue_heap(heap,3);
-    enqueue_heap(heap,2);
+    enqueue_heap(heap,1,NULL);
+    enqueue_heap(heap,3,NULL);
+    enqueue_heap(heap,2,NULL);
     CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",3,heap->data[1]);
 }
 
 void test_dequeue_heap_multiple(CuTest *tc)
 {
     heapQueue *heap = newHeapQueue();
-    enqueue_heap(heap,1);
-    enqueue_heap(heap,3);
-    enqueue_heap(heap,2);
-    enqueue_heap(heap,4);
-    enqueue_heap(heap,5);
+    enqueue_heap(heap,1,NULL);
+    enqueue_heap(heap,3,NULL);
+    enqueue_heap(heap,2,NULL);
+    enqueue_heap(heap,4,NULL);
+    enqueue_heap(heap,5,NULL);
 
     for(int i=0; i<=heap->size; i++)
         printf("%d(%d) ",i,heap->data[i]);
@@ -104,6 +104,7 @@ CuSuite *Test_Fila_Sh()
     return suite;
 }
 
+
 void test_fila_run()
 {
 
@@ -116,5 +117,4 @@ void test_fila_run()
     CuSuiteSummary(suite,output);
     CuSuiteDetails(suite,output);
     printf("%s\n",output->buffer);
-
 }
