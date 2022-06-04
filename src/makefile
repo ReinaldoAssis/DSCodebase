@@ -8,3 +8,7 @@ clean:
 
 s:
 	./program
+
+a:
+	make
+	./program
