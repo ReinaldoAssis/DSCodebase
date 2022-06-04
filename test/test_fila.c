@@ -73,17 +73,7 @@ void test_dequeue_heap_multiple(CuTest *tc)
     enqueue_heap(heap,4,NULL);
     enqueue_heap(heap,5,NULL);
 
-    for(int i=0; i<=heap->size; i++)
-        printf("%d(%d) ",i,heap->data[i]);
-
-    printf("\n");
-
     int resp = dequeue_heap(heap);
-
-    for(int i=0; i<=heap->size; i++)
-        printf("%d(%d) ",i,heap->data[i]);
-
-    printf("\n");
 
     CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",5,resp);
 }
