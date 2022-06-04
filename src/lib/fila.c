@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include "./logger.h"
 
+#include <time.h>
+
 priorityQueue *newPriorityQueue()
 {
     priorityQueue *fila = (priorityQueue *) malloc(sizeof(priorityQueue));
@@ -11,8 +13,10 @@ priorityQueue *newPriorityQueue()
     return fila;
 }
 
-void enqueue_sh(priorityQueue **filapt, int v, int p)
+void enqueue_sh(priorityQueue **filapt, int v, int p, int *comparacoes)
 {
+    bool comp = comparacoes != NULL;
+
     priorityQueue *fila = *filapt;
 
     queueItem *item = (queueItem *)malloc(sizeof(queueItem));
@@ -34,7 +38,10 @@ void enqueue_sh(priorityQueue **filapt, int v, int p)
     {
         queueItem *current = fila->head;
         while(current->next != NULL && current->next->priority > p)
+        {
+            if(comp) *comparacoes+=1;
             current = current->next;
+        }
 
         item->next = current->next;
         current->next = item;
@@ -91,8 +98,10 @@ void swap(int* a, int* b)
     *b = *aux;
 }
 
-void enqueue_heap(heapQueue *heap, int item)
+void enqueue_heap(heapQueue *heap, int item, int *comparacoes)
 {
+    bool comp = comparacoes != NULL;
+
     if (heap->size >= MAX_HEAP_SIZE) {
         
         printf("Heap overflow!\n");
@@ -108,6 +117,7 @@ void enqueue_heap(heapQueue *heap, int item)
         //parent_index >= i.e 'enquando não for a root'
         while (parent_index >= 1 &&
         heap->data[key_index] > heap->data[parent_index]) {
+            if(comp) *comparacoes+=1;
 
             //a função swap estava se comportando de alguma forma errada
             //fazendo o swap 'manualmente' aqui dentro da função resolveu o problema
@@ -165,4 +175,30 @@ int dequeue_heap(heapQueue *heap)
     max_heapify(heap, 1);
     return item;
    
+}
+
+//roda testes aleatorios e salva em um arquivo
+void runQueueBenchmarking()
+{
+    srand(time(NULL));
+
+    for(int k=0; k<5; k++)
+    {
+        int *size = rand()%31;
+
+        priorityQueue *linkedq = newPriorityQueue();
+
+        int comps = 0;
+        
+        for(int i=0; i<size; i++)
+        {
+            enqueue_sh(&linkedq,rand()%101,rand()%20,&comps);
+        }
+
+        printf("Size linked queue %d\n",size);
+        printf("Comparacoes linked queue %d\n",comps);
+        printf("-------------\n");
+    }
+
+
 }

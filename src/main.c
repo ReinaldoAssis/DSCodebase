@@ -4,7 +4,7 @@
 
 #include "../test/global_tests.h"
 #include "lib/logger.h"
-
+#include "lib/fila.h"
 
 void routine(bool debug, int argc, char *argv[])
 {
@@ -12,6 +12,7 @@ void routine(bool debug, int argc, char *argv[])
     {
         //testRun();
         test_fila_run();
+        runQueueBenchmarking();
     }
     else
     {
