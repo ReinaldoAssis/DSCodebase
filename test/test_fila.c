@@ -41,6 +41,53 @@ void test_new_heap(CuTest *tc)
     CuAssertPtrNotNullMsg(tc,"Error, não foi possível cirar a fila com heap.",heap);
 }
 
+void test_swap(CuTest *tc)
+{
+    int ar[2] = {20,10};
+    swap(&ar[0],&ar[1]);
+    CuAssertIntEquals_Msg(tc, "Error, função swap produziu um resultado inesperado.",10,ar[0]);
+}
+
+void test_enqueue_heap(CuTest *tc)
+{
+    heapQueue *heap = newHeapQueue();
+    enqueue_heap(heap,10);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",10,item_of(heap,1));
+}
+
+void test_enqueue_heap_multiple(CuTest *tc)
+{
+    heapQueue *heap = newHeapQueue();
+    enqueue_heap(heap,1);
+    enqueue_heap(heap,2);
+    enqueue_heap(heap,3);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",3,heap->data[3]);
+}
+
+void test_max_heapify()
+{
+    heapQueue *heap = newHeapQueue();
+    enqueue_heap(heap,1);
+    enqueue_heap(heap,2);
+    enqueue_heap(heap,3);
+    enqueue_heap(heap,4);
+    enqueue_heap(heap,5);
+
+    for(int i=0; i<=heap->size; i++)
+        printf("%d|%d ",i,heap->data[i]);
+
+    printf("\n");
+
+    max_heapify(heap,1);
+
+    for(int i=0; i<=heap->size; i++)
+        printf("%d|%d ",i,heap->data[i]);
+
+    printf("\n");
+
+
+}
+
 CuSuite *Test_Fila_Sh()
 {
     CuSuite *suite = CuSuiteNew();
@@ -49,6 +96,9 @@ CuSuite *Test_Fila_Sh()
     SUITE_ADD_TEST(suite,test_dequeue_sh);
     SUITE_ADD_TEST(suite,test_enqueue_sh_multiple);
     SUITE_ADD_TEST(suite,test_new_heap);
+    SUITE_ADD_TEST(suite,test_enqueue_heap);
+    SUITE_ADD_TEST(suite,test_swap);
+    SUITE_ADD_TEST(suite,test_enqueue_heap_multiple);
     return suite;
 }
 
@@ -64,5 +114,7 @@ void test_fila_run()
     CuSuiteSummary(suite,output);
     CuSuiteDetails(suite,output);
     printf("%s\n",output->buffer);
+
+    test_max_heapify();
 
 }

@@ -19,8 +19,6 @@ void enqueue_sh(priorityQueue **filapt, int v, int p)
     item->value = v;
     item->priority = p;
 
-    printf("adding %d\n",v);
-
     if(fila->head == NULL)
     {
         fila->head = item;
@@ -86,3 +84,73 @@ int item_of(heapQueue *heap, int i)
     return heap->data[i];
 }
 
+void swap(int* a, int* b)
+{
+    int *aux = a;
+    *a = *b;
+    *b = *aux;
+}
+
+void enqueue_heap(heapQueue *heap, int item)
+{
+    if (heap->size >= MAX_HEAP_SIZE) {
+        
+        printf("Heap overflow!\n");
+        exit(1);
+
+    } else {
+
+        heap->data[++heap->size] = item;
+
+        int key_index = heap->size;
+        int parent_index = get_parent_index(heap, heap->size);
+
+        //parent_index >= i.e 'enquando não for a root'
+        while (parent_index >= 1 &&
+        heap->data[key_index] > heap->data[parent_index]) {
+
+            swap(&heap->data[key_index], &heap->data[parent_index]);
+            key_index = parent_index;
+            parent_index = get_parent_index(heap, key_index);
+
+        }
+    }
+}
+
+// int dequeue(heapQueue *heap)
+// {
+//     if (heap->size <= 0) {
+//         printf("Heap underflow!\n");
+//         return -1;
+//     }
+    
+//     int item = heap->data[1];
+//     heap->data[1] = heap->data[heap->size];
+//     heap->size--;
+//     max_heapify(heap, 1);
+//     return item;
+   
+// }
+
+void max_heapify(heapQueue *heap, int i)
+{
+    int largest;
+    int left_index = get_left_index(heap, i);
+    int right_index = get_right_index(heap, i);
+
+    if (left_index <= heap->size && heap->data[left_index] > heap->data[i]) 
+    {
+        largest = left_index;
+    } 
+    else 
+        largest = i;
+
+    if (right_index <= heap->size && heap->data[right_index] > heap->data[largest]) 
+        largest = right_index;
+    
+    if (heap->data[i] != heap->data[largest]) 
+    {
+        swap(&heap->data[i], &heap->data[largest]);
+        max_heapify(heap, largest);
+    }
+}

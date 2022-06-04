@@ -24,6 +24,7 @@ queueItem* dequeue_sh(priorityQueue *fila);
 
 //==================================================
 
+void swap(int *a, int *b);
 
 typedef struct heapQueue
 {
@@ -33,9 +34,9 @@ typedef struct heapQueue
 
 heapQueue *newHeapQueue();
 
-void enqueue_heap();
+void enqueue_heap(heapQueue *heap, int item);
 
-int dequeue(heapQueue *heap);
+int dequeue_heap(heapQueue *heap);
 
 int get_parent_index(heapQueue *heap, int i);
 
