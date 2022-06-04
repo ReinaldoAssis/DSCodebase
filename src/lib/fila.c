@@ -184,7 +184,7 @@ void runQueueBenchmarking()
 
     for(int k=0; k<5; k++)
     {
-        int *size = rand()%31;
+        int *size = rand()%1000;
 
         priorityQueue *linkedq = newPriorityQueue();
 
@@ -192,8 +192,10 @@ void runQueueBenchmarking()
         
         for(int i=0; i<size; i++)
         {
-            enqueue_sh(&linkedq,rand()%101,rand()%20,&comps);
+            enqueue_sh(&linkedq,rand()%101,rand()%20,NULL);
         }
+
+        enqueue_sh(&linkedq,rand()%101,rand()%20,&comps);
 
         printf("Size linked queue %d\n",size);
         printf("Comparacoes linked queue %d\n",comps);
