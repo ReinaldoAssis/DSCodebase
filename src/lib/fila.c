@@ -1,6 +1,7 @@
 #include "fila.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <stdbool.h>
 #include "./logger.h"
 
@@ -182,9 +183,15 @@ void runQueueBenchmarking()
 {
     srand(time(NULL));
 
-    for(int k=0; k<5; k++)
+    int testes=300;
+    int maxrand=1000;
+
+    FILE *f = criar_stream("../LinkedQmarking.txt",NULL);
+    FILE *fheap = criar_stream("../HeapQmarking.txt",NULL);
+
+    for(int k=0; k<testes; k++)
     {
-        int *size = rand()%1000;
+        int *size = rand()%maxrand;
 
         priorityQueue *linkedq = newPriorityQueue();
 
@@ -192,15 +199,42 @@ void runQueueBenchmarking()
         
         for(int i=0; i<size; i++)
         {
-            enqueue_sh(&linkedq,rand()%101,rand()%20,NULL);
+            enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,NULL);
         }
 
-        enqueue_sh(&linkedq,rand()%101,rand()%20,&comps);
+        enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,&comps);
 
-        printf("Size linked queue %d\n",size);
-        printf("Comparacoes linked queue %d\n",comps);
-        printf("-------------\n");
+        char st[1000];
+        sprintf(st,"%d %d\n", size, comps);
+
+        escrever_str(f,st);
+
+        // printf("Size linked queue %d\n",size);
+        // printf("Comparacoes linked queue %d\n",comps);
+        // printf("-------------\n");
+
     }
 
+    encerrar_stream(f);
 
+    for(int k=0; k<testes; k++)
+    {
+        int comps=0;
+        int *size = rand()%maxrand;
+
+        heapQueue *heap = newHeapQueue();
+
+        for(int i=0; i<size; i++)
+            enqueue_heap(heap,rand()%maxrand,NULL);
+
+        enqueue_heap(heap,rand()%maxrand,&comps);
+
+        char st[1000];
+        sprintf(st,"%d %d\n", size, comps);
+
+        escrever_str(fheap,st);
+
+    }
+
+    encerrar_stream(fheap);
 }
