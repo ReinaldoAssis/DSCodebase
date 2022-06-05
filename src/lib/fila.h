@@ -1,4 +1,4 @@
-#define MAX_HEAP_SIZE 1000000
+#define MAX_HEAP_SIZE 10000000
 
 //implementação de fila de prioridade com linked list
 typedef struct queueItem 

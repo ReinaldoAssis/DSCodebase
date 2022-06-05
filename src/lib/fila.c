@@ -183,15 +183,15 @@ void runQueueBenchmarking()
 {
     srand(time(NULL));
 
-    int testes=3;
-    int maxrand=100000;
+    int testes=1000;
+    int maxrand=20000;
 
-    FILE *f = criar_stream("../LinkedQmarking.txt",NULL);
     FILE *fheap = criar_stream("../HeapQmarking.txt",NULL);
 
+    FILE *f = criar_stream("../LinkedQmarking.txt",NULL);
     for(int k=0; k<testes; k++)
     {
-        int *size = rand()%maxrand;
+        int size = rand()%maxrand;
 
         priorityQueue *linkedq = newPriorityQueue();
 
@@ -199,52 +199,43 @@ void runQueueBenchmarking()
         
         for(int i=0; i<size; i++)
         {
-            enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,NULL);
+            enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,&comps);
         }
 
-        clock_t start = clock();
-        enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,&comps);
-        clock_t end = clock();
-
-        double timespent = (double)(end - start)/CLOCKS_PER_SEC;
-
         char st[1000];
-        sprintf(st,"%d %f\n", size, timespent);
+        sprintf(st,"%d %f\n", size, (double)comps/size);
 
         escrever_str(f,st);
-
-        // printf("Size linked queue %d\n",size);
-        // printf("Comparacoes linked queue %d\n",comps);
-        // printf("-------------\n");
 
     }
 
     encerrar_stream(f);
 
+    maxrand = 2000;
+
     for(int k=0; k<testes; k++)
     {
         int comps=0;
-        int *size = rand()%maxrand;
+        int size = rand()%maxrand;
 
 
-        heapQueue *heap = newHeapQueue();
-
-        for(int i=0; i<size; i++){
-            enqueue_heap(heap,rand()%maxrand,NULL);
-
+        
+        double media=0;
+        for(int h=0; h<100; h++)
+        {
+            heapQueue *heap = newHeapQueue();
+            comps=0;
+            for(int i=0; i<size; i++){
+                enqueue_heap(heap,rand()%maxrand,&comps);
+            }
+            media += (double)comps/size;
         }
 
-        clock_t start = clock();
-        enqueue_heap(heap,rand()%maxrand,&comps);
-        clock_t end = clock();
-
-        double timespent = (double)(end - start)/CLOCKS_PER_SEC;
-
+        media /= 100;
         char st[1000];
-        sprintf(st,"%d %f\n", size, timespent);
 
+        sprintf(st,"%d %f\n", size, media);
         escrever_str(fheap,st);
-
     }
 
     encerrar_stream(fheap);
