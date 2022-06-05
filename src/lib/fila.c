@@ -183,8 +183,8 @@ void runQueueBenchmarking()
 {
     srand(time(NULL));
 
-    int testes=300;
-    int maxrand=1000;
+    int testes=3;
+    int maxrand=100000;
 
     FILE *f = criar_stream("../LinkedQmarking.txt",NULL);
     FILE *fheap = criar_stream("../HeapQmarking.txt",NULL);
@@ -202,10 +202,14 @@ void runQueueBenchmarking()
             enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,NULL);
         }
 
+        clock_t start = clock();
         enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,&comps);
+        clock_t end = clock();
+
+        double timespent = (double)(end - start)/CLOCKS_PER_SEC;
 
         char st[1000];
-        sprintf(st,"%d %d\n", size, comps);
+        sprintf(st,"%d %f\n", size, timespent);
 
         escrever_str(f,st);
 
@@ -222,15 +226,22 @@ void runQueueBenchmarking()
         int comps=0;
         int *size = rand()%maxrand;
 
+
         heapQueue *heap = newHeapQueue();
 
-        for(int i=0; i<size; i++)
+        for(int i=0; i<size; i++){
             enqueue_heap(heap,rand()%maxrand,NULL);
 
+        }
+
+        clock_t start = clock();
         enqueue_heap(heap,rand()%maxrand,&comps);
+        clock_t end = clock();
+
+        double timespent = (double)(end - start)/CLOCKS_PER_SEC;
 
         char st[1000];
-        sprintf(st,"%d %d\n", size, comps);
+        sprintf(st,"%d %f\n", size, timespent);
 
         escrever_str(fheap,st);
 
