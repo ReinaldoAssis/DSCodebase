@@ -179,6 +179,7 @@ int dequeue_heap(heapQueue *heap)
 }
 
 //roda testes aleatorios e salva em um arquivo
+
 void runQueueBenchmarking()
 {
     srand(time(NULL));
