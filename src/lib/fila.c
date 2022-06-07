@@ -184,7 +184,7 @@ void runQueueBenchmarking()
 {
     srand(time(NULL));
 
-    int testes=100;
+    int testes=300;
     int maxrand=2000;
 
     FILE *fheap = criar_stream("../ferramentas/HeapQmarking.txt",NULL);
