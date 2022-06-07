@@ -184,12 +184,12 @@ void runQueueBenchmarking()
 {
     srand(time(NULL));
 
-    int testes=1000;
-    int maxrand=20000;
+    int testes=100;
+    int maxrand=2000;
 
-    FILE *fheap = criar_stream("../HeapQmarking.txt",NULL);
+    FILE *fheap = criar_stream("../ferramentas/HeapQmarking.txt",NULL);
 
-    FILE *f = criar_stream("../LinkedQmarking.txt",NULL);
+    FILE *f = criar_stream("../ferramentas/LinkedQmarking.txt",NULL);
     for(int k=0; k<testes; k++)
     {
         int size = rand()%maxrand;

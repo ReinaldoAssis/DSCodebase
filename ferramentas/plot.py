@@ -4,10 +4,10 @@ import io
 
 from numpy import number
 
-file = open("LinkedQmarking_4.txt",'r');
+file = open("LinkedQmarking.txt",'r');
 lines = file.readlines()
 
-filetwo = open("HeapQmarking_4.txt",'r');
+filetwo = open("HeapQmarking.txt",'r');
 linestwo = filetwo.readlines()
 
 x = []
