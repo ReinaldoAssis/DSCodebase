@@ -14,20 +14,18 @@ typedef struct binaryheapQueue
     char data[MAX_HEAP_SIZE];
 } binaryheapQueue;
 
-binaryheapQueue *newHeapQueue();
+binaryheapQueue *newBinaryQueue();
 
-void enqueue_heap(binaryheapQueue *heap, char item, int *comparacoes);
+void binary_enqueue(binaryheapQueue *heap, char item, int *comparacoes);
 
-char dequeue_heap(binaryheapQueue *heap);
+char binary_dequeue(binaryheapQueue *heap);
 
-int get_parent_index(binaryheapQueue *heap, int i);
+int binary_get_parent_index(binaryheapQueue *heap, int i);
 
-int get_left_index(binaryheapQueue *heap, int i);
+int binary_get_left_index(binaryheapQueue *heap, int i);
 
-int get_right_index(binaryheapQueue *heap, int i);
+int binary_get_right_index(binaryheapQueue *heap, int i);
 
-void min_heapify(binaryheapQueue *heap, int i);
+void binary_min_heapify(binaryheapQueue *heap, int i);
 
-char item_of(binaryheapQueue *heap, int i);
-
-void runQueueBenchmarking();
+char binary_item_of(binaryheapQueue *heap, int i);

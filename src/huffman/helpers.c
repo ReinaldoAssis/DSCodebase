@@ -6,7 +6,7 @@
 
 void get_bytes_frequency()
 {
-    FILE *f = fopen("./test.txt","r");
+    FILE *f = fopen("./huffman.txt","r");
     
     if(f != NULL)
     {

@@ -41,12 +41,12 @@ void test_new_heap(CuTest *tc)
     CuAssertPtrNotNullMsg(tc,"Error, não foi possível cirar a fila com heap.",heap);
 }
 
-void test_swap(CuTest *tc)
-{
-    int ar[2] = {20,10};
-    swap(&ar[0],&ar[1]);
-    CuAssertIntEquals_Msg(tc, "Error, função swap produziu um resultado inesperado.",10,ar[0]);
-}
+// void test_swap(CuTest *tc)
+// {
+//     int ar[2] = {20,10};
+//     swap(&ar[0],&ar[1]);
+//     CuAssertIntEquals_Msg(tc, "Error, função swap produziu um resultado inesperado.",10,ar[0]);
+// }
 
 void test_enqueue_heap(CuTest *tc)
 {
@@ -88,7 +88,7 @@ CuSuite *Test_Fila_Sh()
     SUITE_ADD_TEST(suite,test_enqueue_sh_multiple);
     SUITE_ADD_TEST(suite,test_new_heap);
     SUITE_ADD_TEST(suite,test_enqueue_heap);
-    SUITE_ADD_TEST(suite,test_swap);
+    //SUITE_ADD_TEST(suite,test_swap);
     SUITE_ADD_TEST(suite,test_enqueue_heap_multiple);
     SUITE_ADD_TEST(suite,test_dequeue_heap_multiple);
     return suite;

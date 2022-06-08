@@ -92,13 +92,6 @@ int item_of(heapQueue *heap, int i)
     return heap->data[i];
 }
 
-// void swap(int* a, int* b)
-// {
-//     int *aux = a;
-//     *a = *b;
-//     *b = *aux;
-// }
-
 void enqueue_heap(heapQueue *heap, int item, int *comparacoes)
 {
     bool comp = comparacoes != NULL;
