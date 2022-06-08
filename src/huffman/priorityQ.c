@@ -64,7 +64,7 @@ void binary_enqueue(binaryheapQueue *heap, char item, int *comparacoes)
 }
 
 
-void max_heapify(binaryheapQueue *heap, int i)
+void min_heapify_binary(binaryheapQueue *heap, int i)
 {
     int largest;
     int left_index = get_left_index(heap, i);
@@ -90,7 +90,7 @@ void max_heapify(binaryheapQueue *heap, int i)
     }
 }
 
-char dequeue_heap(binaryheapQueue *heap)
+char binary_dequeue(binaryheapQueue *heap)
 {
     if (heap->size <= 0) {
         printf("Heap underflow!\n");

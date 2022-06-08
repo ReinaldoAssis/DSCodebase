@@ -26,6 +26,6 @@ int binary_get_left_index(binaryheapQueue *heap, int i);
 
 int binary_get_right_index(binaryheapQueue *heap, int i);
 
-void binary_min_heapify(binaryheapQueue *heap, int i);
+void min_heapify_binary(binaryheapQueue *heap, int i);
 
 char binary_item_of(binaryheapQueue *heap, int i);
