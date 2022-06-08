@@ -24,7 +24,7 @@ queueItem* dequeue_sh(priorityQueue *fila);
 
 //==================================================
 
-void swap(int *a, int *b);
+//void swap(int *a, int *b);
 
 typedef struct heapQueue
 {
@@ -47,7 +47,5 @@ int get_right_index(heapQueue *heap, int i);
 void max_heapify(heapQueue *heap, int i);
 
 int item_of(heapQueue *heap, int i);
-
-void heapsort(heapQueue *heap);
 
 void runQueueBenchmarking();
