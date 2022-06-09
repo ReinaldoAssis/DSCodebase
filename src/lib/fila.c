@@ -108,7 +108,8 @@ void enqueue_heap(heapQueue *heap, int item, int *comparacoes)
         int key_index = heap->size;
         int parent_index = get_parent_index(heap, heap->size);
 
-        //parent_index >= i.e 'enquando não for a root'
+        //printf("!! atual %d parent %d\n",key_index,parent_index);
+        //parent_index >= i.e 'enquanto não for a root'
         while (parent_index >= 1 &&
         heap->data[key_index] > heap->data[parent_index]) {
             if(comp) *comparacoes+=1;

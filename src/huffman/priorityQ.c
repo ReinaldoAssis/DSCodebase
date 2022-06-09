@@ -1,109 +1,84 @@
-#include "helpers.h"
+#include "priorityQ.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
-binaryheapQueue* newBinaryQueue()
+void swap(heapq_node **x, heapq_node **y) {
+    heapq_node *aux = *x;
+    *x = *y;
+    *y = aux;
+}
+
+huffheapQueue* newHuffQueue()
 {
-    binaryheapQueue *heap = (binaryheapQueue *) malloc(sizeof(binaryheapQueue));
+    huffheapQueue *heap = (huffheapQueue *) malloc(sizeof(huffheapQueue));
     heap->size = 0;
+    
+    for(int i=0; i<MAX_HUFF_Q; i++)
+        heap->items[i] = NULL;
+
+    //heap->items[0] = newHeapNode('0',INT_MIN);
+
     return heap;
 }
 
-int binary_get_parent_index(binaryheapQueue *heap, int i)
+heapq_node* newHeapNode(char value, int priority)
+{
+    heapq_node *node = (heapq_node*)malloc(sizeof(heapq_node));
+    node->value = value;
+    node->priority = priority;
+    return node;
+}
+
+int huff_get_parent_index(huffheapQueue *heap, int i)
 {
     return i/2;
+    //return i >> 1; //int div
 }
 
-int binary_get_left_index(binaryheapQueue *heap, int i)
+int huff_get_left_index(huffheapQueue *heap, int i)
 {
-    return 2*i;
+    return i << 1;
 }
 
-int binary_get_right_index(binaryheapQueue *heap, int i)
+int huff_get_right_index(huffheapQueue *heap, int i)
 {
-    return 2*i+1;
+    return (i << 1)+1;
 }
 
-char binary_item_of(binaryheapQueue *heap, int i)
+heapq_node* huff_item_of(huffheapQueue *heap, int i)
 {
-    return heap->data[i];
+    return heap->items[i];
 }
 
-void binary_enqueue(binaryheapQueue *heap, char item, int *comparacoes)
+void huff_enqueue(huffheapQueue *heap, char value, int priority)
 {
-    bool comp = comparacoes != NULL;
-
-    if (heap->size >= MAX_HEAP_SIZE) {
-        
-        printf("Heap overflow!\n");
-        exit(1);
-
-    } else {
-
-        heap->data[++heap->size] = item;
-
+    if(heap->size >= MAX_HUFF_Q)
+    {
+        printf("Huffman Queue Overflow.\n");
+        return;
+    }
+    else
+    {
+        heap->items[++heap->size] = newHeapNode(value,priority);
         int key_index = heap->size;
-        int parent_index = get_parent_index(heap, heap->size);
+        int parent_index = heap->size >> 1;
 
-        //parent_index >= i.e 'enquando não for a root'
-        while (parent_index >= 1 &&
-        heap->data[key_index] > heap->data[parent_index]) {
-            if(comp) *comparacoes+=1;
-
-            //a função swap estava se comportando de alguma forma errada
-            //fazendo o swap 'manualmente' aqui dentro da função resolveu o problema
-            //swap(&heap->data[key_index], &heap->data[parent_index]);
-            int aux = heap->data[key_index];
-            heap->data[key_index] = heap->data[parent_index];
-            heap->data[parent_index] = aux;
+       // if(parent_index > 0)
+        //{
+        while(parent_index >= 1 && heap->items[key_index]->priority < heap->items[parent_index]->priority)
+        {
+            printf("atual %d parent %d\n",heap->items[key_index]->priority,heap->items[parent_index]->priority);
+            printf("swap\n");
+            swap(&heap->items[key_index],&heap->items[parent_index]);
             key_index = parent_index;
-            parent_index = get_parent_index(heap, key_index);
-
+            parent_index = key_index >> 1;
         }
+
+        //}
+        
     }
+
 }
 
-
-void min_heapify_binary(binaryheapQueue *heap, int i)
-{
-    int largest;
-    int left_index = get_left_index(heap, i);
-    int right_index = get_right_index(heap, i);
-
-    if (left_index <= heap->size && heap->data[left_index] > heap->data[i]) 
-    {
-        largest = left_index;
-    } 
-    else 
-        largest = i;
-
-    if (right_index <= heap->size && heap->data[right_index] > heap->data[largest]) 
-        largest = right_index;
-    
-    if (heap->data[i] != heap->data[largest]) 
-    {
-        //swap(&heap->data[i], &heap->data[largest]);
-        int aux = heap->data[i];
-        heap->data[i] = heap->data[largest];
-        heap->data[largest] = aux;
-        max_heapify(heap, largest);
-    }
-}
-
-char binary_dequeue(binaryheapQueue *heap)
-{
-    if (heap->size <= 0) {
-        printf("Heap underflow!\n");
-        return -1;
-    }
-    
-    int item = heap->data[1];
-    heap->data[1] = heap->data[heap->size];
-    heap->size--;
-
-    // printf("Max heapify em %d\n",heap->data[1]);
-
-    max_heapify(heap, 1);
-    return item;
-   
-}

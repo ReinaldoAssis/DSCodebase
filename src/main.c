@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     {
         testRun();
         test_fila_run();
+        test_huffman_run();
     }
     if(benchmarking)
         runQueueBenchmarking();

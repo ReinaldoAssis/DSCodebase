@@ -22,8 +22,8 @@ void test_enqueue_sh_multiple(CuTest *tc)
 {
     priorityQueue *fila = newPriorityQueue();
     enqueue_sh(&fila,10,10,NULL);
-    enqueue_sh(&fila,3,3,NULL);
     enqueue_sh(&fila,24,20,NULL);
+    enqueue_sh(&fila,3,3,NULL);
     CuAssertIntEquals_Msg(tc,"Error, valor inesperado para valor na fila com linked list.",24,fila->head->value);
 }
 
@@ -69,9 +69,9 @@ void test_dequeue_heap_multiple(CuTest *tc)
     heapQueue *heap = newHeapQueue();
     enqueue_heap(heap,1,NULL);
     enqueue_heap(heap,3,NULL);
+    enqueue_heap(heap,5,NULL);
     enqueue_heap(heap,2,NULL);
     enqueue_heap(heap,4,NULL);
-    enqueue_heap(heap,5,NULL);
 
     int resp = dequeue_heap(heap);
 
