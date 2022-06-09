@@ -24,22 +24,22 @@ void test_enqueue(CuTest *tc)
 {
     huffheapQueue *heap = newHuffQueue();
     
-    huff_enqueue(heap,'I',3);
-    huff_enqueue(heap,'A',5);
-    huff_enqueue(heap,'N',4);
-    huff_enqueue(heap,'D',7);
-    huff_enqueue(heap,'R',1);
-    huff_enqueue(heap,'E',2);
-    huff_enqueue(heap,'L',6);
-    huff_enqueue(heap,'O',8);
+    huff_enqueue(heap,'C',3);
+    huff_enqueue(heap,'E',5);
+    huff_enqueue(heap,'D',4);
+    huff_enqueue(heap,'G',7);
+    huff_enqueue(heap,'A',1);
+    huff_enqueue(heap,'B',2);
+    huff_enqueue(heap,'F',6);
+    huff_enqueue(heap,'H',8);
 
 
-    printf("Estado da heap\n");
-    for(int i=1; i<=heap->size; i++)
-        printf("%c ",heap->items[i]->value);
-    printf("\n");
+    // printf("Estado da heap\n");
+    // for(int i=1; i<=heap->size; i++)
+    //     printf("%c ",heap->items[i]->value);
+    // printf("\n");
 
-    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'I',huff_item_of(heap,3)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'A',huff_item_of(heap,1)->value);
 }
 
 // void test_enqueue_multiple(CuTest *tc)

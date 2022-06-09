@@ -33,8 +33,8 @@ heapq_node* newHeapNode(char value, int priority)
 
 int huff_get_parent_index(huffheapQueue *heap, int i)
 {
-    return i/2;
-    //return i >> 1; //int div
+    //return i/2;
+    return i >> 1; //int div
 }
 
 int huff_get_left_index(huffheapQueue *heap, int i)
@@ -65,18 +65,15 @@ void huff_enqueue(huffheapQueue *heap, char value, int priority)
         int key_index = heap->size;
         int parent_index = heap->size >> 1;
 
-       // if(parent_index > 0)
-        //{
         while(parent_index >= 1 && heap->items[key_index]->priority < heap->items[parent_index]->priority)
         {
-            printf("atual %d parent %d\n",heap->items[key_index]->priority,heap->items[parent_index]->priority);
-            printf("swap\n");
+            // printf("atual %d parent %d\n",heap->items[key_index]->priority,heap->items[parent_index]->priority);
+            // printf("swap\n");
             swap(&heap->items[key_index],&heap->items[parent_index]);
             key_index = parent_index;
             parent_index = key_index >> 1;
         }
 
-        //}
         
     }
 
