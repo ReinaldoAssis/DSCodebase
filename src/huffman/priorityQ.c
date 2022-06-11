@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <limits.h>
 
-void swap(heapq_node **x, heapq_node **y) {
-    heapq_node *aux = *x;
+void swap(hufftree_node **x, hufftree_node **y) {
+    hufftree_node *aux = *x;
     *x = *y;
     *y = aux;
 }
@@ -23,11 +23,11 @@ huffheapQueue* newHuffQueue()
     return heap;
 }
 
-heapq_node* newHeapNode(char value, int priority)
+hufftree_node* newHeapNode(char value, int priority)
 {
-    heapq_node *node = (heapq_node*)malloc(sizeof(heapq_node));
+    hufftree_node *node = (hufftree_node*)malloc(sizeof(hufftree_node));
     node->value = value;
-    node->priority = priority;
+    node->frequency = priority;
     return node;
 }
 
@@ -47,7 +47,7 @@ int huff_get_right_index(huffheapQueue *heap, int i)
     return (i << 1)+1;
 }
 
-heapq_node* huff_item_of(huffheapQueue *heap, int i)
+hufftree_node* huff_item_of(huffheapQueue *heap, int i)
 {
     return heap->items[i];
 }
@@ -65,7 +65,7 @@ void huff_enqueue(huffheapQueue *heap, char value, int priority)
         int key_index = heap->size;
         int parent_index = heap->size >> 1;
 
-        while(parent_index >= 1 && heap->items[key_index]->priority < heap->items[parent_index]->priority)
+        while(parent_index >= 1 && heap->items[key_index]->frequency < heap->items[parent_index]->frequency)
         {
             // printf("atual %d parent %d\n",heap->items[key_index]->priority,heap->items[parent_index]->priority);
             // printf("swap\n");
@@ -79,14 +79,40 @@ void huff_enqueue(huffheapQueue *heap, char value, int priority)
 
 }
 
-heapq_node* huff_dequeue(huffheapQueue *heap)
+void huff_enqueue_from_node(huffheapQueue *heap, hufftree_node *node)
+{
+    if(heap->size >= MAX_HUFF_Q)
+    {
+        printf("Huffman Queue Overflow.\n");
+        return;
+    }
+    else
+    {
+        heap->items[++heap->size] = node;
+        int key_index = heap->size;
+        int parent_index = heap->size >> 1;
+
+        while(parent_index >= 1 && heap->items[key_index]->frequency < heap->items[parent_index]->frequency)
+        {
+            // printf("atual %d parent %d\n",heap->items[key_index]->priority,heap->items[parent_index]->priority);
+            // printf("swap\n");
+            swap(&heap->items[key_index],&heap->items[parent_index]);
+            key_index = parent_index;
+            parent_index = key_index >> 1;
+        }
+
+        
+    }
+}
+
+hufftree_node* huff_dequeue(huffheapQueue *heap)
 {
     if(heap->size <= 0)
     {
         printf("Huffman heap underflow!\n");
         return NULL;
     }
-    heapq_node *item = heap->items[1];
+    hufftree_node *item = heap->items[1];
     heap->items[1] = heap->items[heap->size];
     --heap->size;
     min_heapify_huff(heap,1);
@@ -99,7 +125,7 @@ void min_heapify_huff(huffheapQueue *heap, int i)
     int left = i << 1;
     int right = (i << 1) +1;
 
-    if(left <= heap->size && heap->items[left]->priority < heap->items[i]->priority){
+    if(left <= heap->size && heap->items[left]->frequency < heap->items[i]->frequency){
         max = left;
     }
     else
@@ -107,12 +133,12 @@ void min_heapify_huff(huffheapQueue *heap, int i)
         max = i;
     }
 
-    if(right <= heap->size && heap->items[right]->priority < heap->items[max]->priority)
+    if(right <= heap->size && heap->items[right]->frequency < heap->items[max]->frequency)
     {
         max = right;
     }
 
-    if(heap->items[i]->priority != heap->items[max]->priority)
+    if(heap->items[i]->frequency != heap->items[max]->frequency)
     {
         swap(&heap->items[i],&heap->items[max]);
         min_heapify_huff(heap,max);

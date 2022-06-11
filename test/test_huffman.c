@@ -13,8 +13,8 @@ void test_new_queue(CuTest *tc)
 
 void test_swap(CuTest *tc)
 {
-    heapq_node *a = newHeapNode('R',1);
-    heapq_node *b = newHeapNode('C',1);
+    hufftree_node *a = newHeapNode('R',1);
+    hufftree_node *b = newHeapNode('C',1);
     
     swap(&a,&b);
     CuAssertIntEquals(tc,'R',b->value);

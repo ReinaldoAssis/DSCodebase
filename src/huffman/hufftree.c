@@ -31,7 +31,7 @@ hufftree_node *parse_to_tree(huffheapQueue *heap)
         hufftree_node *right = huff_dequeue(heap);
         long long int soma = left->frequency+right->frequency;
         root = new_hufftree_node(soma,rootchar,left,right);
-        huff_enqueue(heap,root);
+        huff_enqueue_from_node(heap,root);
     }
     return root;
 }
