@@ -33,6 +33,10 @@ int main(int argc, char *argv[])
         testRun();
         test_fila_run();
         test_huffman_run();
+        
+        FILE *f = fopen("./huffman.txt","r");
+        compress(f);
+
     }
     if(benchmarking)
         runQueueBenchmarking();

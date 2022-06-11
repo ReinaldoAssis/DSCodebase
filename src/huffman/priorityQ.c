@@ -79,3 +79,42 @@ void huff_enqueue(huffheapQueue *heap, char value, int priority)
 
 }
 
+heapq_node* huff_dequeue(huffheapQueue *heap)
+{
+    if(heap->size <= 0)
+    {
+        printf("Huffman heap underflow!\n");
+        return NULL;
+    }
+    heapq_node *item = heap->items[1];
+    heap->items[1] = heap->items[heap->size];
+    --heap->size;
+    min_heapify_huff(heap,1);
+    return item;
+}
+
+void min_heapify_huff(huffheapQueue *heap, int i)
+{
+    int max;
+    int left = i << 1;
+    int right = (i << 1) +1;
+
+    if(left <= heap->size && heap->items[left]->priority < heap->items[i]->priority){
+        max = left;
+    }
+    else
+    {
+        max = i;
+    }
+
+    if(right <= heap->size && heap->items[right]->priority < heap->items[max]->priority)
+    {
+        max = right;
+    }
+
+    if(heap->items[i]->priority != heap->items[max]->priority)
+    {
+        swap(&heap->items[i],&heap->items[max]);
+        min_heapify_huff(heap,max);
+    }
+}

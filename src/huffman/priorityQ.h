@@ -2,11 +2,12 @@
 
 //PRIORITY QUEUE
 
-typedef struct heapq_node
-{
-    int priority;
-    char value;
-} heapq_node;
+// typedef struct heapq_node
+// {
+//     long long int priority;
+//     unsigned char value;
+
+// } heapq_node;
 
 typedef struct huffheapQueue
 {

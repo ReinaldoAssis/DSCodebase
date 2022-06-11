@@ -34,9 +34,9 @@ void test_enqueue(CuTest *tc)
     huff_enqueue(heap,'H',8);
 
 
-    // printf("Estado da heap\n");
-    // for(int i=1; i<=heap->size; i++)
-    //     printf("%c ",heap->items[i]->value);
+    // printf("Deq da heap\n");
+    // for(int i=1; i<=heap->size-1; i++)
+    //     printf("%c ",huff_dequeue(heap)->value);
     // printf("\n");
 
     CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'A',huff_item_of(heap,1)->value);

@@ -3,8 +3,9 @@
 #include <string.h>
 
 #include "helpers.h"
+#include "priorityQ.h"
 
-void get_bytes_frequency()
+void print_bytes()
 {
     FILE *f = fopen("./huffman.txt","r");
     
@@ -27,3 +28,54 @@ void get_bytes_frequency()
     }
 
 }
+
+void print_bytes_frequency()
+{
+    FILE *f = fopen("./huffman.txt","r");
+
+    long long int frequency[256] = {0};
+    get_bytes_frequency(frequency,f);
+
+    for(int i=0; i<256; i++)
+    {
+        printf("%d %ld\n",i,frequency[i]);
+    }
+}
+
+void get_bytes_frequency(long long int *frequency, FILE *f)
+{
+    unsigned char byte;
+    while(fscanf(f,"%c",&byte) != EOF)
+        frequency[byte]++;
+}
+
+void print_huffqueue(huffheapQueue *heap)
+{
+    printf("Estado da heap\n");
+    for(int i=1; i<=heap->size; i++)
+        printf("%c ",huff_dequeue(heap)->value);
+    printf("\n");
+}
+
+void *compress(FILE *f)
+{
+    long long int frequency[256] = {0};
+    get_bytes_frequency(frequency,f);
+
+    huffheapQueue *heap = newHuffQueue();
+    
+    unsigned char value;
+    for(int i=0; i<256; i++)
+    {
+        value = (unsigned char)i;
+        if(frequency[i] > 0)
+            huff_enqueue(heap,value,frequency[i]);
+    }
+
+    //DEBUG
+    //print_huffqueue(heap);
+
+    printf("Finished bytes heap queue.\n");
+
+}
+
