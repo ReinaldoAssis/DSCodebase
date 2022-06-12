@@ -46,11 +46,12 @@ void test_enqueue(CuTest *tc)
 void test_hashtable(CuTest *tc)
 {
     hashtable *tb = newhashtable();
-    put_hashtable(tb,NULL,'R',0);
-    put_hashtable(tb,NULL,'E',0);
-    put_hashtable(tb,NULL,'I',0);
+    put_hashtable(tb,'R',0,'0',0);
+    put_hashtable(tb,'E',0,'0',0);
+    put_hashtable(tb,'I',0,'0',0);
+    
     //print_hashtable(tb);
-    CuAssertIntEquals_Msg(tc,"Error, hashtable valor inesperado.",0,get_hashtable(tb,'E')->size);
+    CuAssertIntEquals_Msg(tc,"Error, hashtable valor inesperado.",0,get_hashtable(tb,'E')->level);
 }
 
 // void test_dequeue_multiple(CuTest *tc)
