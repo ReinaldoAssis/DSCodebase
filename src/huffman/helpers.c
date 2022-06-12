@@ -29,7 +29,7 @@ hashtable *newhashtable()
     return h;
 }
 
-void put_hashtable(hashtable *h, unsigned char byte, long long int frequency, unsigned char code, int level)
+void put_hashtable(hashtable *h, unsigned char byte, long long int frequency, unsigned int code, int level)
 {
     hashnode *nd = (hashnode*)malloc(sizeof(hashnode));
     nd->code = code;
@@ -255,7 +255,11 @@ void convert(FILE *input, FILE *output, hashtable *tb)
     while(fscanf(input,"%c",&byte) != EOF)
     {
         unsigned char converted;
-        //conv
+        long long int level = tb->table[byte]->level+1;
+        if(level <= 7)
+        {
+            converted = (unsigned char)(tb->table[byte]->code | converted);
+        }
     }
 }
 
@@ -323,7 +327,7 @@ void *compress(FILE *f, char *path)
     printf("tree size %d trash size %d\n",tree_size,trashlen);
 
     //TODO: trashlen
-    //write_header(result,tree_size,trashlen,root);
+    write_header(result,tree_size,trashlen,root);
 
 
 

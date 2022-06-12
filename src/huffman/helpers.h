@@ -24,7 +24,7 @@ typedef struct hashnode
 {
     unsigned char byte;
     long long int frequency;
-    unsigned char* code;
+    unsigned int code;
     int level;
 } hashnode;
 
@@ -35,7 +35,7 @@ typedef struct hashtable
 
 void print_hashtable(hashtable *h);
 
-void put_hashtable(hashtable *h, unsigned char byte, long long int frequency, unsigned char code, int level);
+void put_hashtable(hashtable *h, unsigned char byte, long long int frequency, unsigned int code, int level);
 
 hashtable *newhashtable();
 
