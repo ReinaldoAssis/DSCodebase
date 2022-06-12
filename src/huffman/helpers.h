@@ -24,7 +24,7 @@ typedef struct hashnode
 {
     unsigned char byte;
     long long int frequency;
-    unsigned char code;
+    unsigned char* code;
     int level;
 } hashnode;
 
