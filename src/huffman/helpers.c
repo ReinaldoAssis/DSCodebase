@@ -7,14 +7,17 @@
 #include "priorityQ.h"
 #include "hufftree.h"
 
+#include <math.h>
+
 //HASH TABLE
 
 hashnode *newhashnode()
 {
     hashnode *node = (hashnode*)malloc(sizeof(hashnode));
     node->code = NULL;
-    node->node = NULL;
-    node->size = -1;
+    node->frequency = -1;
+    node->byte = NULL;
+    node->level = -1;
     return node;
 }
 
@@ -26,13 +29,14 @@ hashtable *newhashtable()
     return h;
 }
 
-void put_hashtable(hashtable *h, hufftree_node *node, unsigned char code, int size)
+void put_hashtable(hashtable *h, unsigned char byte, long long int frequency, unsigned char code, int level)
 {
     hashnode *nd = (hashnode*)malloc(sizeof(hashnode));
     nd->code = code;
-    nd->node = node;
-    nd->size = size;
-    h->table[code] = nd;
+    nd->frequency = frequency;
+    nd->byte = byte;
+    nd->level = level;
+    h->table[byte] = nd;
 }
 
 hashnode* get_hashtable(hashtable *tb, unsigned char key)
@@ -45,11 +49,32 @@ void print_hashtable(hashtable *h)
     for(int i=0; i<256; i++)
     {
         if(h->table[i] != NULL)
-            printf("%d|%02X\n",i,h->table[i]);
+            printf("%d|%02X|level %d|f %d\n",i,h->table[i],h->table[i]->level,h->table[i]->frequency);
     }
 }
 
 //====================================
+
+void generate_bittable(hufftree_node *root, hashtable *h, char *code, int level)
+{
+    if(root != NULL)
+    {
+        if(is_leaf(root))
+        {
+            put_hashtable(h,root->value,root->frequency,code,level);
+        } 
+        else
+        {
+            char l[1] = {'0'};
+            char r[1] = {'1'};
+            strcat(code,l);
+            generate_bittable(root->left,h,code,level+1);
+            strcat(code,r);
+            generate_bittable(root->right,h,code,level+1);
+
+        }
+    }
+}
 
 void print_bytes()
 {
@@ -103,34 +128,45 @@ void print_huffqueue(huffheapQueue *heap)
     printf("\n");
 }
 
-char* generate_huffcodes(hufftree_node *root, char **code)
+int total_number_of_bits(hashtable *h)
 {
-    if(root != NULL){
-        printf("node %c\n",root->value);
-        if(is_leaf(root))
+    int bits=0;
+    for(int i=0; i<256; i++)
+    {
+        if(h->table[i] != NULL)
         {
-            if(root->value == '*' || root->value == '\\')
-            {
-                sprintf(*code,"\\%c",root->value);
-            }else
-            {
-                sprintf(*code,"%c",root->value);
-            }
-            printf("ERA PRA RETORNAR\n");
-            return;
-        }
-        
-        if(root->left != NULL){
-            *code += sprintf(*code,"%s0",*code);
-            generate_huffcodes(root->left,code);
-        }
-        if(root->right != NULL)
-        {
-            *code += sprintf(*code,"%s1",*code);
-            generate_huffcodes(root->right,code);
+            if(h->table[i]->frequency > 0)
+                bits += (h->table[i]->frequency*h->table[i]->level);
         }
 
     }
+    return bits;
+}
+
+int total_number_of_bytes(double bits)
+{
+    return ceil(bits/8);
+}
+
+void write_header(FILE *output, int treesize, int transhsize, hufftree_node *root)
+{
+    // unsigned char* bytes = (unsigned char*)malloc(2*sizeof(unsigned char));
+    // bytes[0] = transhsize << 5 | treesize >> 8; //5 bits para a arvore, 3 bits para o trash
+    // bytes[1] = treesize;
+
+    // fputc(bytes[0],output);
+    // fputc(bytes[1],output);
+
+    short int initialbytes = transhsize;
+    initialbytes <<= 13;
+    initialbytes += treesize;
+    fprintf(output,"%c%c",initialbytes >> 8, initialbytes);
+    write_hufftree(root,output);
+}
+
+void convert(FILE *input, FILE *output, hashtable *tb)
+{
+    
 }
 
 void *compress(FILE *f, char *path)
@@ -179,8 +215,22 @@ void *compress(FILE *f, char *path)
     FILE *result = fopen(path,"w");
     int trashlen = 0;
 
-    // char code[100000];
-    // generate_huffcodes(root,&code);
-    // printf("codesx %s\n",code);
+    hashtable *tb = newhashtable();
+    char buff[1000];
+    generate_bittable(root,tb,buff,0);
+    print_hashtable(tb);
+
+    printf("The hashtable has been generated!\n");
+
+    int bits = total_number_of_bits(tb);
+    int nbytes = total_number_of_bytes(bits);
+    trashlen = (nbytes*8)-bits; //convertemos bytes completos para bits e fazemos a diferença com oq temos
+    printf("tree size %d trash size %d\n",tree_size,trashlen);
+
+    //TODO: trashlen
+    write_header(result,tree_size,trashlen,root);
+
+
+
 }
 

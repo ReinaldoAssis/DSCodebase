@@ -22,9 +22,10 @@ void *compress(FILE *f, char *path);
 
 typedef struct hashnode
 {
-    hufftree_node *node;
+    unsigned char byte;
+    long long int frequency;
     unsigned char code;
-    int size;
+    int level;
 } hashnode;
 
 typedef struct hashtable
@@ -34,7 +35,7 @@ typedef struct hashtable
 
 void print_hashtable(hashtable *h);
 
-void put_hashtable(hashtable *h, hufftree_node *node, unsigned char code, int size);
+void put_hashtable(hashtable *h, unsigned char byte, long long int frequency, unsigned char code, int level);
 
 hashtable *newhashtable();
 
