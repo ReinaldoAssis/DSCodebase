@@ -4,6 +4,7 @@
 #include "../src/huffman/priorityQ.h"
 #include "./framework/CuTest.h"
 #include "./global_tests.h"
+#include "../src/huffman/helpers.h"
 
 void test_new_queue(CuTest *tc)
 {
@@ -42,14 +43,15 @@ void test_enqueue(CuTest *tc)
     CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'A',huff_item_of(heap,1)->value);
 }
 
-// void test_enqueue_multiple(CuTest *tc)
-// {
-//     binaryheapQueue *heap = newBinaryQueue();
-//     binary_enqueue(heap,1,NULL);
-//     binary_enqueue(heap,3,NULL);
-//     binary_enqueue(heap,2,NULL);
-//     CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",3,heap->data[1]);
-// }
+void test_hashtable(CuTest *tc)
+{
+    hashtable *tb = newhashtable();
+    put_hashtable(tb,NULL,'R',0);
+    put_hashtable(tb,NULL,'E',0);
+    put_hashtable(tb,NULL,'I',0);
+    //print_hashtable(tb);
+    CuAssertIntEquals_Msg(tc,"Error, hashtable valor inesperado.",0,get_hashtable(tb,'E')->size);
+}
 
 // void test_dequeue_multiple(CuTest *tc)
 // {
@@ -72,7 +74,7 @@ CuSuite *Test_Huffman()
     SUITE_ADD_TEST(suite,test_new_queue);
     SUITE_ADD_TEST(suite,test_swap);
     SUITE_ADD_TEST(suite,test_enqueue);
-    //SUITE_ADD_TEST(suite,test_enqueue_multiple);
+    SUITE_ADD_TEST(suite,test_hashtable);
     //SUITE_ADD_TEST(suite,test_dequeue_multiple);
     return suite;
 }
