@@ -7,8 +7,26 @@
 #include "lib/fila.h"
 #include "huffman/helpers.h"
 
+void intro()
+{
+    printf("    ______   _\n");
+    printf("    |  ___| (_)\n");
+    printf("    | |_ _____ _ __ \n");
+    printf("    |  _|_  / | '_ \\ \n");
+    printf("    | |  / /| | |_) |\n");
+    printf("    \\_| /___|_| .__/ \n");
+    printf("              | |    \n");
+    printf("              |_|    \n");
+
+    printf("\n- O segundo melhor compactador na seu máquina, provavelmente -  \n");
+    printf("Grupo: {Reinaldo, Matheus, Guilherme, Fernanda}\n");
+ 
+}
+
 int main(int argc, char *argv[])
 {
+    intro();
+
     bool debug = true;
     
     char whole_arg[500];
