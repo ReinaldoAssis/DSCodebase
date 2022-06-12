@@ -35,14 +35,18 @@ int main(int argc, char *argv[])
         test_huffman_run();
         
         FILE *f = fopen("./huffman.txt","r");
-        compress(f);
+        char path[20] = "hufftest";
+        compress(f,path);
 
     }
     if(benchmarking)
         runQueueBenchmarking();
 
     if(huffman)
-        get_bytes_frequency();
+    {
+        // FILE *f = fopen("huffman.txt","r");
+        // compress(f,"huftest");
+    }
 
     return 0;
 }
