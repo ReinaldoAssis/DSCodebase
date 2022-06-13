@@ -264,62 +264,127 @@ unsigned char set_bit(unsigned char c, int i)
 void convert(FILE *input, FILE *output, hashtable *tb)
 {
     unsigned char byte;
-    
+    unsigned char whole_byte = 0; //byte inteiro a ser escrito
+    int len=0; //length
+    int resto=0; //o que sobrou do proximo codigo
+
     while(fscanf(input,"%c",&byte) != EOF)
     {
-        unsigned char whole_byte; //byte inteiro a ser escrito
         unsigned int converted; //cod convertido em huff
-        int len=0; //length
-        int resto=0; //o que sobrou do proximo codigo
+        int code_len=0;
+
 
         while(len < 8)
         {
+            printf("char atual %c  ",byte);
             hashnode *node = tb->table[byte];
             converted = node->code;
 
+            code_len = node->level;
+            if(code_len >= 8) {
+                printf("Code len break\n");
+                break;
+            } //tratar diferente se o cod for maior ou igual a 1 byte
+
+            //se o byte não tiver espaço suficiente para o cod atual
             if(8-len < node->level)
             {
                 whole_byte <<= 8-len; //se nao for suficiente, abre espaço para o que pode
-                len += 8-len;
 
                 //concatenar bit por bit
                 for(int i=0; i<8-len; i++)
                 {
                     bool is_set = is_bit_i_set(converted,node->level-1-i);
-                    if(is_set) set_bit(whole_byte,(8-len)-1-i);
+                    //printf(" bit %d is %d ",node->level-1-i,is_set);
+                    if(is_set) whole_byte = set_bit(whole_byte,(8-len)-1-i);
                 }
 
                 resto = node->level - (8-len);
+                len += 8-len;
             }
             else
             {
+                //printf("  whole ");
+
                 whole_byte <<= node->level; //"abre espaço" para concatenar
+
+                // bin(whole_byte,7);
+                // printf("  ");
+
                 len += node->level;
                 whole_byte |= converted; //concatena o cod
             }
 
+            if(len < 8){
+                if(fscanf(input,"%c",&byte) == EOF){
+                    //printf("EOF\n");
+                    whole_byte <<= (8-len);
+                    bin(whole_byte,7);
+                    printf("  len %d\n",len);
+
+                    break;
+                }
+            }
+
+            //TODO: escrever no arquivo
+            // printf("converted ");
+            bin(whole_byte,7);
+            printf("  len %d\n",len);
+
         }
 
-        //TODO: escrever no arquivo
-        printf("converted ");
-        bin(whole_byte,7);
-        printf("\n");
+        len = 0;
 
-        free(whole_byte);
-        whole_byte = (unsigned char)malloc(sizeof(unsigned char));
+        //printf("EOF while\n");
+
+        if(code_len >= 8)
+        {
+            //TODO: tratar codes maiores ou iguais a 1 byte
+        }
+
+        //free(whole_byte); //RESET no whole_byte
+        whole_byte = 0;
+        //whole_byte = (unsigned char)malloc(sizeof(unsigned char));
         
+        //coloca o que sobrou no proximo whole_byte, desde que resto < 8
         if(resto > 0)
         {
+            len = resto; //len fica salva para o proximo
+            
+            //setar bit por bit
+            for(int i=0; i<len; i++)
+            {
+                bool is_set = is_bit_i_set(converted,len-1-i);
+                if(is_set) whole_byte = set_bit(whole_byte,len-1-i);
+                
+            }
             
         }
+        
 
+        
     }
+
+    if(resto > 0)
+    {
+        printf("last ");
+        whole_byte <<= (8-resto);
+        bin(whole_byte,7);
+        printf("\n");
+    }
+
 }
+
+// void convert(FILE *input, FILE *output, hashtable *tb)
+// {
+
+// }
 
 void *compress(FILE *f, char *path)
 {
     long long int frequency[256] = {0};
     get_bytes_frequency(frequency,f);
+    rewind(f);
 
     huffheapQueue *heap = newHuffQueue();
     
@@ -372,7 +437,7 @@ void *compress(FILE *f, char *path)
     print_tree(root,printbuff);
     
     //generate_bittable(root,tb,buff,0);
-    print_hashtable(tb);
+    //print_hashtable(tb);
 
     printf("The hashtable has been generated!\n");
 
@@ -382,8 +447,10 @@ void *compress(FILE *f, char *path)
     printf("tree size %d trash size %d\n",tree_size,trashlen);
 
     //TODO: trashlen
-    write_header(result,tree_size,trashlen,root);
+    //write_header(result,tree_size,trashlen,root);
 
+    printf("\n");
+    convert(f,result,tb);
 
 
 }
