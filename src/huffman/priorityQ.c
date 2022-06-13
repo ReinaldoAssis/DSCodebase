@@ -128,15 +128,14 @@ void min_heapify_huff(huffheapQueue *heap, int i)
     if(left <= heap->size && heap->items[left]->frequency < heap->items[i]->frequency){
         max = left;
     }
-    else
-    {
-        max = i;
-    }
-
+    else max = i;   
+        
+    
     if(right <= heap->size && heap->items[right]->frequency < heap->items[max]->frequency)
     {
         max = right;
     }
+
 
     if(heap->items[i]->frequency != heap->items[max]->frequency)
     {
