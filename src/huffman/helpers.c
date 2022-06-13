@@ -250,16 +250,10 @@ void write_header(FILE *output, int treesize, int transhsize, hufftree_node *roo
 void convert(FILE *input, FILE *output, hashtable *tb)
 {
     unsigned char byte;
-    unsigned char rem; //resto
-
+    
     while(fscanf(input,"%c",&byte) != EOF)
     {
-        unsigned char converted;
-        long long int level = tb->table[byte]->level+1;
-        if(level <= 7)
-        {
-            converted = (unsigned char)(tb->table[byte]->code | converted);
-        }
+        
     }
 }
 
