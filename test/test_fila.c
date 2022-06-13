@@ -82,6 +82,10 @@ void test_dequeue_heap_multiple(CuTest *tc)
     int resp = dequeue_heap(heap);
 
     CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",5,resp);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",4,dequeue_heap(heap));
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",3,dequeue_heap(heap));
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",2,dequeue_heap(heap));
+    CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",1,dequeue_heap(heap));
 }
 
 

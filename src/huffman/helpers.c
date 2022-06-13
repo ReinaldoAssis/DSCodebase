@@ -97,7 +97,7 @@ void print_tree(hufftree_node *tree, char *path)
     if(is_leaf(tree))
     {
         printf("%s\n",path);
-        free(path);
+        //free(path);
         path = (char*)malloc(1000*sizeof(char));
         return;
     }
@@ -110,7 +110,7 @@ void print_tree(hufftree_node *tree, char *path)
     strcat(codeleft,temp);
     print_tree(tree->left,codeleft);
 
-    free(temp);
+    //free(temp);
     temp = (char*)malloc(4*sizeof(char));
     sprintf(temp,"-|>%c",tree->right->value);
 
@@ -206,6 +206,7 @@ void get_bytes_frequency(long long int *frequency, FILE *f)
 void print_huffqueue(huffheapQueue *heap)
 {
     printf("Estado da heap\n");
+    printf("size %d\n",heap->size);
     for(int i=1; i<=heap->size; i++)
         printf("%c ", huff_dequeue(heap)->value);
     printf("\n");
@@ -242,7 +243,9 @@ void write_header(FILE *output, int treesize, int transhsize, hufftree_node *roo
 
     short int initialbytes = transhsize;
     initialbytes <<= 13;
-    initialbytes += treesize;
+
+    initialbytes |= treesize;
+
     fprintf(output,"%c%c",initialbytes >> 8, initialbytes);
     write_hufftree(root,output);
 }
@@ -261,29 +264,34 @@ unsigned char set_bit(unsigned char c, int i)
     return mask | c;
 }
 
-void convert(FILE *input, FILE *output, hashtable *tb)
+void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
 {
     unsigned char byte;
     unsigned char whole_byte = 0; //byte inteiro a ser escrito
     int len=0; //length
     int resto=0; //o que sobrou do proximo codigo
+    int i=0;
 
     while(fscanf(input,"%c",&byte) != EOF)
     {
         unsigned int converted; //cod convertido em huff
+        hashnode *node = (hashnode *)malloc(sizeof(hashnode));
         int code_len=0;
 
         resto = 0;
 
         while(len < 8)
         {
-            printf("char atual %c  ",byte);
-            hashnode *node = tb->table[byte];
+            i++;
+            
+            node = tb->table[byte];
             converted = node->code;
+            if(debug)
+                printf("%d| %c  ",i,byte);
 
             code_len = node->level;
             if(code_len >= 8) {
-                printf("Code len break\n");
+                
                 break;
             } //tratar diferente se o cod for maior ou igual a 1 byte
 
@@ -320,32 +328,51 @@ void convert(FILE *input, FILE *output, hashtable *tb)
                 if(fscanf(input,"%c",&byte) == EOF){
                     //printf("EOF\n");
                     whole_byte <<= (8-len);
-                    bin(whole_byte,7);
-                    printf("  len %d\n",len);
+                    if(debug){
+                        bin(whole_byte,7);
+                        printf("  len %d\n",len);
+                    }
+
+                    fprintf(output,"%c",whole_byte);
 
                     break;
                 }
             }
 
             //TODO: escrever no arquivo
-            // printf("converted ");
-            bin(whole_byte,7);
-            printf("  len %d\n",len);
-
+            if(len == 8)
+            {
+                if(debug){
+                    bin(whole_byte,7);
+                    printf(" int %d",whole_byte);
+                    printf("  len %d\n",len);
+                }
+                
+                fprintf(output,"%c",whole_byte);
+            }
         }
 
         len = 0;
 
-        //printf("EOF while\n");
-
+        //TODO: tratar codes maiores ou iguais a 1 byte
         if(code_len >= 8)
         {
-            //TODO: tratar codes maiores ou iguais a 1 byte
+            //a estratégia é "descarregar" os bytes completos
+            //e o que sobrar jogar de volta no algoritmo
+            int n_of_whole_bytes = code_len/8;
+            for(int k=0; k<n_of_whole_bytes; k++)
+            {
+                whole_byte |= converted;
+                converted >>= 8;
+                if(debug){
+                    bin(whole_byte,7); printf("\n");
+                }
+            }
+            resto = code_len%8;
         }
 
-        //free(whole_byte); //RESET no whole_byte
+        //RESET no whole_byte
         whole_byte = 0;
-        //whole_byte = (unsigned char)malloc(sizeof(unsigned char));
         
         //coloca o que sobrou no proximo whole_byte, desde que resto < 8
         if(resto > 0)
@@ -368,10 +395,14 @@ void convert(FILE *input, FILE *output, hashtable *tb)
 
     if(resto > 0)
     {
-        printf("last ");
-        whole_byte <<= (8-resto);
-        bin(whole_byte,7);
-        printf("\n");
+        //TODO: escrever no arquivo
+        fprintf(output,"%c",whole_byte);
+        if(debug){
+            printf("last ");
+            whole_byte <<= (8-resto);
+            bin(whole_byte,7);
+            printf("\n");
+        }
     }
 
 }
@@ -395,7 +426,7 @@ void *compress(FILE *f, char *path)
         value = (unsigned char)i;
         if(frequency[i] > 0)
         {
-            //printf("enqueue %c\n",value);
+            printf("enqueue %c f %d\n",value,frequency[i]);
             huff_enqueue(heap,value,frequency[i]);
         }
     }
@@ -434,10 +465,9 @@ void *compress(FILE *f, char *path)
     buff = 0b0;
     generate_bittable(root,tb,true,buff,0);
     
-    char printbuff[1000];
+    char printbuff[10000];
     print_tree(root,printbuff);
     
-    //generate_bittable(root,tb,buff,0);
     //print_hashtable(tb);
 
     printf("The hashtable has been generated!\n");
@@ -447,11 +477,10 @@ void *compress(FILE *f, char *path)
     trashlen = (nbytes*8)-bits; //convertemos bytes completos para bits e fazemos a diferença com oq temos
     printf("tree size %d trash size %d\n",tree_size,trashlen);
 
-    //TODO: trashlen
-    //write_header(result,tree_size,trashlen,root);
+    write_header(result,tree_size,trashlen,root);
 
     printf("\n");
-    convert(f,result,tb);
+    convert(f,result,tb,true);
 
 
 }
