@@ -273,6 +273,7 @@ void convert(FILE *input, FILE *output, hashtable *tb)
         unsigned int converted; //cod convertido em huff
         int code_len=0;
 
+        resto = 0;
 
         while(len < 8)
         {
