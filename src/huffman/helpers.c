@@ -139,7 +139,7 @@ void generate_bittable(hufftree_node *root, hashtable *h, bool flag, unsigned in
         if(is_leaf(root))
         {
             printf("putting %c = ",root->value);
-            bin(code,level);
+            bin(code,level-1);
             printf(" | level %d\n",level);
             put_hashtable(h,root->value,root->frequency,code,level);
             return;
@@ -247,13 +247,72 @@ void write_header(FILE *output, int treesize, int transhsize, hufftree_node *roo
     write_hufftree(root,output);
 }
 
+//roubei do professor, mas modifiquei para bool
+bool is_bit_i_set(unsigned char c, int i)
+{
+    unsigned char mask = 1 << i;
+    return (mask & c) > 0 ? true : false;
+}
+
+//roubei do professor
+unsigned char set_bit(unsigned char c, int i)
+{
+    unsigned char mask = 1 << i;
+    return mask | c;
+}
+
 void convert(FILE *input, FILE *output, hashtable *tb)
 {
     unsigned char byte;
     
     while(fscanf(input,"%c",&byte) != EOF)
     {
+        unsigned char whole_byte; //byte inteiro a ser escrito
+        unsigned int converted; //cod convertido em huff
+        int len=0; //length
+        int resto=0; //o que sobrou do proximo codigo
+
+        while(len < 8)
+        {
+            hashnode *node = tb->table[byte];
+            converted = node->code;
+
+            if(8-len < node->level)
+            {
+                whole_byte <<= 8-len; //se nao for suficiente, abre espaço para o que pode
+                len += 8-len;
+
+                //concatenar bit por bit
+                for(int i=0; i<8-len; i++)
+                {
+                    bool is_set = is_bit_i_set(converted,node->level-1-i);
+                    if(is_set) set_bit(whole_byte,(8-len)-1-i);
+                }
+
+                resto = node->level - (8-len);
+            }
+            else
+            {
+                whole_byte <<= node->level; //"abre espaço" para concatenar
+                len += node->level;
+                whole_byte |= converted; //concatena o cod
+            }
+
+        }
+
+        //TODO: escrever no arquivo
+        printf("converted ");
+        bin(whole_byte,7);
+        printf("\n");
+
+        free(whole_byte);
+        whole_byte = (unsigned char)malloc(sizeof(unsigned char));
         
+        if(resto > 0)
+        {
+            
+        }
+
     }
 }
 
@@ -306,9 +365,11 @@ void *compress(FILE *f, char *path)
     hashtable *tb = newhashtable();
     //char buff[1000];
     unsigned int buff = (unsigned int) malloc(sizeof(unsigned int));
+    buff = 0b0;
     generate_bittable(root,tb,true,buff,0);
     
-    //print_tree(root,buff);
+    char printbuff[1000];
+    print_tree(root,printbuff);
     
     //generate_bittable(root,tb,buff,0);
     print_hashtable(tb);
