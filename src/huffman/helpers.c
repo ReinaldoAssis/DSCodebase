@@ -313,13 +313,7 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
             }
             else
             {
-                //printf("  whole ");
-
                 whole_byte <<= node->level; //"abre espaço" para concatenar
-
-                // bin(whole_byte,7);
-                // printf("  ");
-
                 len += node->level;
                 whole_byte |= converted; //concatena o cod
             }
@@ -339,17 +333,14 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                 }
             }
 
-            //TODO: escrever no arquivo
-            if(len == 8)
-            {
-                if(debug){
-                    bin(whole_byte,7);
-                    printf(" int %d",whole_byte);
-                    printf("  len %d\n",len);
-                }
-                
-                fprintf(output,"%c",whole_byte);
+            if(debug){
+                bin(whole_byte,7);
+                printf(" hex %02X",whole_byte);
+                printf("  len %d\n",len);
             }
+
+            if(len == 8) fprintf(output,"%c",whole_byte);
+                
         }
 
         len = 0;
@@ -362,11 +353,14 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
             int n_of_whole_bytes = code_len/8;
             for(int k=0; k<n_of_whole_bytes; k++)
             {
-                whole_byte |= converted;
-                converted >>= 8;
+                code_len -= 8;
+                whole_byte |= (converted>>code_len);
+                fprintf(output,"%c",whole_byte);
+                //converted <<= 8;
                 if(debug){
                     bin(whole_byte,7); printf("\n");
                 }
+                whole_byte = 0;
             }
             resto = code_len%8;
         }
@@ -426,7 +420,6 @@ void *compress(FILE *f, char *path)
         value = (unsigned char)i;
         if(frequency[i] > 0)
         {
-            printf("enqueue %c f %d\n",value,frequency[i]);
             huff_enqueue(heap,value,frequency[i]);
         }
     }
@@ -465,8 +458,8 @@ void *compress(FILE *f, char *path)
     buff = 0b0;
     generate_bittable(root,tb,true,buff,0);
     
-    char printbuff[10000];
-    print_tree(root,printbuff);
+    //char printbuff[10000];
+    //print_tree(root,printbuff);
     
     //print_hashtable(tb);
 
