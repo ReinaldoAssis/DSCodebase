@@ -62,16 +62,40 @@ int main(int argc, char *argv[])
 
     if(huffman)
     {
-        char file_path[1000];
-        char ouput_path[1000];
-        printf("\nDigite o caminho para o arquivo: ");
-        fgets(file_path,sizeof(file_path),stdin);
+        char file_path[500];
+        char ouput_path[500];
+        char opcao[50];
 
-        printf("\nDigite o caminho de saída: ");
-        fgets(ouput_path,sizeof(ouput_path),stdin);
+        printf("\nCompactar ou descompactar? [c/d]: ");
+        fgets(opcao,sizeof(opcao),stdin);
 
-        FILE *f = fopen(file_path,"r");
-        compress(f,ouput_path);
+        // printf("opcao: %s\n",opcao);
+
+        if(strcmp(opcao,"Compactar\n") == 0 ||
+        strcmp(opcao,"compactar\n") == 0 ||
+        strcmp(opcao,"c\n") == 0 ||
+        strcmp(opcao,"C\n") == 0)
+        {
+            printf("\nDigite o caminho para o arquivo: ");
+            fgets(file_path,sizeof(file_path),stdin);
+
+            printf("\nDigite o caminho de saída: ");
+            fgets(ouput_path,sizeof(ouput_path),stdin);
+
+            strtok(file_path,"\n");
+            strtok(ouput_path,"\n");
+
+            FILE *f = fopen(file_path,"r");
+            compress(f,ouput_path);
+        }
+        else if(strcmp(opcao,"Descompactar\n") == 0 ||
+        strcmp(opcao,"descompactar\n") == 0 ||
+        strcmp(opcao,"d\n") == 0 ||
+        strcmp(opcao,"D\n") == 0)
+        {
+            printf("Ainda não fizemos essa função...\n");
+        }
+
     }
 
     return 0;
