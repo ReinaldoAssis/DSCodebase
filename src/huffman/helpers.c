@@ -468,6 +468,7 @@ void *compress(FILE *f, char *path)
     get_bytes_frequency(frequency,f);
     rewind(f);
 
+
     huffheapQueue *heap = newHuffQueue();
     
     unsigned char value;
