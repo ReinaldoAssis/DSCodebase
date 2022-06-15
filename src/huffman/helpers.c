@@ -371,10 +371,14 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
             if(code_len > 0)
             {
                 unsigned char to_consider = converted<<((8*n_of_whole_bytes)-code_len);
+                if(debug) printf("sobrou ");
+                    
                 for(int l=0; l<code_len; l++){
                     bool is_set = is_bit_i_set(to_consider,7-i);
                     if(is_set) whole_byte = set_bit(whole_byte,7-i);
                 }
+
+                if(debug){bin(whole_byte,7);printf("\n");}
             }
 
             code_len = 0;
