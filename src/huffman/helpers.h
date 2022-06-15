@@ -16,6 +16,8 @@ void get_bytes_frequency(long long int *frequency, FILE *f);
 //@param path: output path
 void *compress(FILE *f, char *path);
 
+void *decompress(FILE *f, FILE *output);
+
 //======================================
 
 //HASH TABLE

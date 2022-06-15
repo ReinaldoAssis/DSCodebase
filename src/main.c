@@ -53,8 +53,11 @@ int main(int argc, char *argv[])
         test_huffman_run();
         
         FILE *f = fopen("./huffman.txt","r");
+        FILE *input = fopen("./basic.huff","r");
+        FILE *output = fopen("./decomp.txt","w");
         char path[20] = "hufftest";
-        compress(f,path);
+        //compress(f,path);
+        decompress(input,output);
 
     }
     if(benchmarking)

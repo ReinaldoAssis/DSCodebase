@@ -538,3 +538,111 @@ void *compress(FILE *f, char *path)
 
 }
 
+// ====================== DECOMPRESS ==========================
+
+void create_temp_tree_file(FILE *input, char *name, int treelen)
+{
+    unsigned char byte;
+    FILE *temp = fopen(name,"w");
+
+    for(int i=0; i<treelen; i++)
+    {
+        fscanf(input,"%c",&byte);
+        fputc(byte,temp);
+    }
+
+    fclose(temp);
+
+}
+
+hufftree_node *create_tree_from_file(FILE *input, hufftree_node *root)
+{
+    unsigned char byte;
+    fscanf(input,"%c",&byte);
+
+    if(byte != '*')
+    {
+        if(byte == '\\')
+            fscanf(input,"%c",&byte);
+        
+        root = new_hufftree_node(0,byte,NULL,NULL);
+
+    } else
+    {
+        root = new_hufftree_node(0,'*',NULL,NULL);
+        root->left = create_tree_from_file(input,root->left);
+        root->right = create_tree_from_file(input,root->right);
+    }
+    return root;
+}
+
+void *decompress(FILE *input, FILE *output)
+{
+    short trashlen=0;
+    short treelen=0;
+    int file_size=0;
+    unsigned char bytetemp;
+
+    fseek(input,0L,SEEK_END);
+    file_size = ftell(input);
+    rewind(input);
+    
+    fscanf(input,"%c",&bytetemp);
+    trashlen = bytetemp >> 5;
+    printf("Trash len %d\n",trashlen);
+
+    treelen = bytetemp << 3;
+    fscanf(input,"%c",&bytetemp);
+    treelen <<= 8;
+    treelen |= bytetemp;
+    printf("tree len %d\n",treelen);
+
+    char temp_name[50] = "huffman_tree_dec.txt";
+    create_temp_tree_file(input,temp_name,treelen);
+
+    FILE *temp = fopen(temp_name,"r");
+
+    hufftree_node *root = NULL;
+    root = create_tree_from_file(temp,root);
+    //DEBUG
+    // char buff[1000];
+    // print_tree(root,buff);
+
+    hashtable *tb = newhashtable();
+    //char buff[1000];
+    unsigned int buff = (unsigned int) malloc(sizeof(unsigned int));
+    buff = 0b0;
+    generate_bittable(root,tb,true,buff,0);
+    //print_hashtable(tb);
+    remove(temp_name);
+
+    unsigned char byte;
+    hufftree_node *node = root;
+
+    int n_bytes=0;
+
+    while(fscanf(input,"%c",&byte) != EOF)
+    {
+        ++n_bytes;
+        for(int i=0; i<8; i++)
+        {
+            if(is_bit_i_set(byte,8-(i+1))) node = node->right;
+            else node = node->left;
+
+            if(is_leaf(node))
+            {
+                fputc(node->value,output);
+                node = root; //volta para a root da árvore
+                //porém temos que considerar que nesse byte ainda tem instruções
+                //a serem seguidas
+            }
+        }
+        if(n_bytes == file_size-1) break;
+        
+    }
+    
+    
+
+    //printf("%02X last byte\n",byte);
+
+}
