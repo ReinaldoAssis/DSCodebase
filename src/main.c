@@ -62,8 +62,16 @@ int main(int argc, char *argv[])
 
     if(huffman)
     {
-        // FILE *f = fopen("huffman.txt","r");
-        // compress(f,"huftest");
+        char file_path[1000];
+        char ouput_path[1000];
+        printf("\nDigite o caminho para o arquivo: ");
+        fgets(file_path,sizeof(file_path),stdin);
+
+        printf("\nDigite o caminho de saída: ");
+        fgets(ouput_path,sizeof(ouput_path),stdin);
+
+        FILE *f = fopen(file_path,"r");
+        compress(f,ouput_path);
     }
 
     return 0;

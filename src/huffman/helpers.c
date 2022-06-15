@@ -345,6 +345,9 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
 
         len = 0;
 
+        //RESET no whole_byte
+        whole_byte = 0;
+
         //TODO: tratar codes maiores ou iguais a 1 byte
         if(code_len >= 8)
         {
@@ -362,11 +365,21 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                 }
                 whole_byte = 0;
             }
-            resto = code_len%8;
-        }
+            //resto = code_len%8;
 
-        //RESET no whole_byte
-        whole_byte = 0;
+            //agora precisamos tratar o que tiver sobrado do huff code
+            if(code_len > 0)
+            {
+                unsigned char to_consider = converted<<((8*n_of_whole_bytes)-code_len);
+                for(int l=0; l<code_len; l++){
+                    bool is_set = is_bit_i_set(to_consider,7-i);
+                    if(is_set) whole_byte = set_bit(whole_byte,7-i);
+                }
+            }
+
+            code_len = 0;
+
+        }
         
         //coloca o que sobrou no proximo whole_byte, desde que resto < 8
         if(resto > 0)
@@ -380,7 +393,8 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                 if(is_set) whole_byte = set_bit(whole_byte,len-1-i);
                 
             }
-            
+
+           
         }
         
 
@@ -401,9 +415,31 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
 
 }
 
-// void convert(FILE *input, FILE *output, hashtable *tb)
+// void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
 // {
+//     int len=0; //tamanho do code
+//     int bit_pos=0;
+//     unsigned int code=0;
+//     unsigned char byte=0;
+//     unsigned char compressed=0;
+    
+//     while(fscanf(input,"%c",&byte) != EOF)
+//     {
+//         len = tb->table[byte]->level;
+//         code = tb->table[byte]->code;
 
+//         for(int i=len-1; i>=0; --i)
+//         {
+//             if(i > 7) //o code é maior que 1 byte
+//             {
+//                 if(is_bit_i_set(code,i%8)) ++compressed;
+//             }
+//             else
+//             {
+//                 if(is_bit_i_set())
+//             }
+//         }
+//     }
 // }
 
 void *compress(FILE *f, char *path)
@@ -431,6 +467,7 @@ void *compress(FILE *f, char *path)
 
     hufftree_node *root = parse_to_tree(heap);
     
+    //DEBUG
     FILE *output = fopen("hufftreeoutput.txt","w");
     write_hufftree(root,output);
     fclose(output);
@@ -446,6 +483,7 @@ void *compress(FILE *f, char *path)
     //usar .fzip - apenas como demonstracao
     char extension[5] = ".huff";
 
+    printf("full caminho %s\n",path);
     strcat(path, extension);
 
     //resultado da compresssao
@@ -468,7 +506,7 @@ void *compress(FILE *f, char *path)
     int bits = total_number_of_bits(tb);
     int nbytes = total_number_of_bytes(bits);
     trashlen = (nbytes*8)-bits; //convertemos bytes completos para bits e fazemos a diferença com oq temos
-    printf("tree size %d trash size %d\n",tree_size,trashlen);
+    printf("tree size %d (%02X) trash size %d (%02X)\n",tree_size,tree_size,trashlen,trashlen);
 
     write_header(result,tree_size,trashlen,root);
 
