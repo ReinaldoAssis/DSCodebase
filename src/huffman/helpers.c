@@ -290,10 +290,7 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                 printf("%d| %c  ",i,byte);
 
             code_len = node->level;
-            if(code_len >= 8) {
-                
-                break;
-            } //tratar diferente se o cod for maior ou igual a 1 byte
+            if(code_len >= 8) break; //tratar diferente se o cod for maior ou igual a 1 byte
 
             //se o byte não tiver espaço suficiente para o cod atual
             if(8-len < node->level)
@@ -328,6 +325,7 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                     }
 
                     fprintf(output,"%c",whole_byte);
+                    whole_byte = 0;
 
                     break;
                 }
@@ -339,14 +337,14 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                 printf("  len %d\n",len);
             }
 
-            if(len == 8) fprintf(output,"%c",whole_byte);
+            if(len == 8) {fprintf(output,"%c",whole_byte); whole_byte=0;}
                 
         }
 
         len = 0;
 
         //RESET no whole_byte
-        whole_byte = 0;
+        //whole_byte = 0;
 
         //TODO: tratar codes maiores ou iguais a 1 byte
         if(code_len >= 8)
@@ -379,6 +377,7 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
                 }
 
                 if(debug){bin(whole_byte,7);printf("\n");}
+                len = code_len;
             }
 
             code_len = 0;
@@ -415,35 +414,52 @@ void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
             bin(whole_byte,7);
             printf("\n");
         }
+        whole_byte=0;
     }
 
 }
 
-// void convert(FILE *input, FILE *output, hashtable *tb, bool debug)
+// void convert(FILE *input, FILE *output, hashtable *tb, bool debug, int trash)
 // {
 //     int len=0; //tamanho do code
 //     int bit_pos=0;
 //     unsigned int code=0;
 //     unsigned char byte=0;
 //     unsigned char compressed=0;
+
+//     unsigned char map1=0;
+//     unsigned char map2=0;
     
 //     while(fscanf(input,"%c",&byte) != EOF)
 //     {
 //         len = tb->table[byte]->level;
 //         code = tb->table[byte]->code;
+//         map1 = code>>8;
+//         map2 = code;
 
 //         for(int i=len-1; i>=0; --i)
 //         {
 //             if(i > 7) //o code é maior que 1 byte
 //             {
-//                 if(is_bit_i_set(code,i%8)) ++compressed;
+//                 if(is_bit_i_set(map1,i%8)) ++compressed;
 //             }
 //             else
 //             {
-//                 if(is_bit_i_set())
+//                 if(is_bit_i_set(map2,i)) ++compressed;
 //             }
+//             if(bit_pos == 7)
+//             {
+//                 bit_pos = -1;
+//                 fprintf(output,"%c",compressed);
+//                 compressed = 0;
+//             }
+//             ++bit_pos;
+//             compressed <<=1;
 //         }
 //     }
+//     compressed >>= 1;
+//     compressed <<= trash;
+//     if(trash != 0) fprintf(output,"%c",compressed);
 // }
 
 void *compress(FILE *f, char *path)
@@ -515,6 +531,7 @@ void *compress(FILE *f, char *path)
     write_header(result,tree_size,trashlen,root);
 
     printf("\n");
+    // convert(f,result,tb,true,trashlen);
     convert(f,result,tb,true);
 
 
