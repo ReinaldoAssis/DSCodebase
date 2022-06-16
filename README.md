@@ -9,7 +9,7 @@
 
 </div>
 
-### Sobre
+### 📖 Sobre
 
 Projeto de Estrutura de Dados (Lecionada pelo professor Marcio Ribeiro) que visa colocar em prática não somente o conhecimento das estruturas e suas implementações, como também por em teste organização, estrutura e planejamento.
 
