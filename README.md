@@ -15,7 +15,7 @@ Projeto de Estrutura de Dados (Lecionada pelo professor Marcio Ribeiro) que visa
 
 Há duas faces a este projeto: a codificação de huffman e o experimento de _time complexity_. O experimento pode ser encontrado na subpasta "lib", já a codificação de huffman em "huffman" - ambas na pasta raíz "src".
 
-Equipe: Reinaldo Assis, Maria Fernanda Ribeiro, Matheus Moreira, Guilherme de Oliveira.
+Equipe: Reinaldo Assis, Maria Fernanda, Matheus Moreira, Guilherme de Oliveira.
 
 ## ⏱ Complexidade de tempo
 
