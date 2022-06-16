@@ -96,7 +96,18 @@ int main(int argc, char *argv[])
         strcmp(opcao,"d\n") == 0 ||
         strcmp(opcao,"D\n") == 0)
         {
-            printf("Ainda não fizemos essa função...\n");
+            printf("\nDigite o caminho para o arquivo: ");
+            fgets(file_path,sizeof(file_path),stdin);
+
+            printf("\nDigite o caminho de saída: ");
+            fgets(ouput_path,sizeof(ouput_path),stdin);
+
+            strtok(file_path,"\n");
+            strtok(ouput_path,"\n");
+
+            FILE *input = fopen(file_path,"r");
+            FILE *output = fopen(ouput_path,"w");
+            decompress(input,output);
         }
 
     }

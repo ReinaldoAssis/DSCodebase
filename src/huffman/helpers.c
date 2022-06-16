@@ -620,6 +620,7 @@ void *decompress(FILE *input, FILE *output)
     hufftree_node *node = root;
 
     int n_bytes=0;
+    int end = file_size-2-treelen;
 
     while(fscanf(input,"%c",&byte) != EOF)
     {
@@ -637,10 +638,22 @@ void *decompress(FILE *input, FILE *output)
                 //a serem seguidas
             }
         }
-        if(n_bytes == file_size-1) break;
+        if(n_bytes == end-1) break; //quebra o loop antes de ler o ultimo byte
         
     }
     
+    fscanf(input,"%c",&byte); //lê o ultimo byte
+    for(int i=0; i<(8-trashlen); i++)
+    {
+        if(is_bit_i_set(byte,8-(i+1))) node = node->right;
+        else node = node->left;
+
+        if(is_leaf(node))
+        {
+            fputc(node->value,output);
+            node = root; 
+        }
+    }
     
 
     //printf("%02X last byte\n",byte);
