@@ -13,31 +13,6 @@ hufftree_node *new_hufftree_node(long long int frequency, unsigned char value, h
     return node;
 }
 
-// hufftree_node *parse_to_tree(huffheapQueue *heap)
-// {
-//     unsigned char rootchar = '*';
-//     hufftree_node *root;
-//     while(heap->size != 1)
-//     {
-//         hufftree_node *left = huff_dequeue(heap);
-//         hufftree_node *right = huff_dequeue(heap);
-//         //printf("pop l %c r %c\n",left->value,right->value);
-//         long long int soma = left->frequency+right->frequency;
-
-//         if(right->value == '*' && left->value != '*' && left->frequency == right->frequency)
-//         {
-//             root = new_hufftree_node(soma,rootchar,right,left);
-//         }
-//         else
-//         {
-//             root = new_hufftree_node(soma,rootchar,left,right);
-//         }
-
-//         huff_enqueue_from_node(heap,root);
-//     }
-//     return root;
-// }
-
 hufftree_node *parse_to_tree(huffheapQueue *heap)
 {
     unsigned char rootchar = '*';
@@ -51,7 +26,11 @@ hufftree_node *parse_to_tree(huffheapQueue *heap)
 
         if(right->value == '*' && left->value != '*' && left->frequency == right->frequency)
         {
-            huff_enqueue_from_node(heap,new_hufftree_node(soma,rootchar,right,left));
+            root = new_hufftree_node(soma,rootchar,right,left);
+        }
+        else if(right->value != '*' && left->value != '*' && left->frequency == right->frequency)
+        {
+            root = new_hufftree_node(soma,rootchar,right,left);
         }
         else
         {
@@ -61,8 +40,26 @@ hufftree_node *parse_to_tree(huffheapQueue *heap)
         huff_enqueue_from_node(heap,root);
     }
     return root;
-    
 }
+
+// hufftree_node *parse_to_tree(huffheapQueue *heap)
+// {
+//     unsigned char rootchar = '*';
+//     hufftree_node *root;
+//     while(heap->size != 1)
+//     {
+//         hufftree_node *left = huff_dequeue(heap);
+//         hufftree_node *right = huff_dequeue(heap);
+//         //printf("pop l %c r %c\n",left->value,right->value);
+//         long long int soma = left->frequency+right->frequency;
+
+//         root = new_hufftree_node(soma,rootchar,left,right);
+
+//         huff_enqueue_from_node(heap,root);
+//     }
+//     return root;
+    
+// }
 
 bool is_leaf(hufftree_node *node)
 {

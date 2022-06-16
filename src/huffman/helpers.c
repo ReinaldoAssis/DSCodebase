@@ -50,7 +50,7 @@ void print_hashtable(hashtable *h)
     {
         if(h->table[i] != NULL)
         {
-            printf("%d|%02X|level %d|f %d\n",i,h->table[i]->byte,h->table[i]->level,h->table[i]->frequency);
+            printf("%d|%02X|level %d|f %d| %c\n",i,h->table[i]->byte,h->table[i]->level,h->table[i]->frequency,h->table[i]->byte);
             //if(h->table[i]->code != NULL)
                 //printf("code %s\n",h->table[i]->code);
         }
@@ -102,7 +102,7 @@ void print_tree(hufftree_node *tree, char *path)
         return;
     }
 
-    unsigned char *codeleft = (unsigned char*)malloc(sizeof(path)*sizeof(unsigned char));
+    unsigned char *codeleft = (unsigned char*)malloc(1000*sizeof(unsigned char));
     
     char *temp = (char*)malloc(4*sizeof(char));
     sprintf(temp,"->%c",tree->left->value);
@@ -111,12 +111,12 @@ void print_tree(hufftree_node *tree, char *path)
     print_tree(tree->left,codeleft);
 
     //free(temp);
-    temp = (char*)malloc(4*sizeof(char));
-    sprintf(temp,"-|>%c",tree->right->value);
+    char *temp2 = (char*)malloc(4*sizeof(char));
+    sprintf(temp2,"-|>%c",tree->right->value);
 
-    unsigned char *coderight = (unsigned char*)malloc(sizeof(path)*sizeof(unsigned char));
+    unsigned char *coderight = (unsigned char*)malloc(1000*sizeof(unsigned char));
     strcpy(coderight,path);
-    strcat(coderight,temp);
+    strcat(coderight,temp2);
     print_tree(tree->right,coderight);
 }
 
@@ -487,6 +487,9 @@ void *compress(FILE *f, char *path)
     printf("Finished bytes heap queue.\n");
 
     hufftree_node *root = parse_to_tree(heap);
+
+    char printbuff[10000];
+    print_tree(root,printbuff);
     
     //DEBUG
     FILE *output = fopen("hufftreeoutput.txt","w");
@@ -517,10 +520,8 @@ void *compress(FILE *f, char *path)
     buff = 0b0;
     generate_bittable(root,tb,true,buff,0);
     
-    //char printbuff[10000];
-    //print_tree(root,printbuff);
-    
-    //print_hashtable(tb);
+    //DEBUG
+    print_hashtable(tb);
 
     printf("The hashtable has been generated!\n");
 
@@ -533,7 +534,7 @@ void *compress(FILE *f, char *path)
 
     printf("\n");
     // convert(f,result,tb,true,trashlen);
-    convert(f,result,tb,true);
+    convert(f,result,tb,false);
 
 
 }

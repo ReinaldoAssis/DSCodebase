@@ -54,19 +54,18 @@ void test_hashtable(CuTest *tc)
     CuAssertIntEquals_Msg(tc,"Error, hashtable valor inesperado.",0,get_hashtable(tb,'E')->level);
 }
 
-// void test_dequeue_multiple(CuTest *tc)
-// {
-//     binaryheapQueue *heap = newBinaryQueue();
-//     binary_enqueue(heap,1,NULL);
-//     binary_enqueue(heap,3,NULL);
-//     binary_enqueue(heap,2,NULL);
-//     binary_enqueue(heap,4,NULL);
-//     binary_enqueue(heap,5,NULL);
+void test_huffman_basic(CuTest *tc)
+{
+    FILE *txt = fopen("basic.txt","r");
+    char output[8] = "basic";
+    compress(txt,output);
 
-//     int resp = binary_dequeue(heap);
+    FILE *inp = fopen("basic.huff","r");
+    FILE *out = fopen("basic_c.txt","w");
+    decompress(inp,out);
 
-//     CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",5,resp);
-// }
+    //CuAssertIntEquals_Msg(tc,"Error, heap queue produziu um resultado inesperado.",5,resp);
+}
 
 
 CuSuite *Test_Huffman()
@@ -76,6 +75,7 @@ CuSuite *Test_Huffman()
     SUITE_ADD_TEST(suite,test_swap);
     SUITE_ADD_TEST(suite,test_enqueue);
     SUITE_ADD_TEST(suite,test_hashtable);
+    //SUITE_ADD_TEST(suite,test_huffman_basic);
     //SUITE_ADD_TEST(suite,test_dequeue_multiple);
     return suite;
 }
