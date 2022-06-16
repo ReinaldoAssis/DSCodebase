@@ -9,10 +9,18 @@
 
 </div>
 
-### 📖 Sobre
+## 📖 Sobre
 
 Projeto de Estrutura de Dados (Lecionada pelo professor Marcio Ribeiro) que visa colocar em prática não somente o conhecimento das estruturas e suas implementações, como também por em teste organização, estrutura e planejamento.
 
 Há duas faces a este projeto: a codificação de huffman e o experimento de _time complexity_. O experimento pode ser encontrado na subpasta "lib", já a codificação de huffman em "huffman" - ambas na pasta raíz "src".
 
 Equipe: Reinaldo Assis, Maria Fernanda Ribeiro, Matheus Moreira, Guilherme de Oliveira.
+
+## ⏱ Complexidade de tempo
+
+Para o nosso experimento de complexidade de tempo comparamos as estruturas Fila de prioridade com lista encadeada e Fila de prioridade com heap. O algoritmo pode ser rodado executando o programa com a flag "--benchmarking", dois arquivos serão gerados dentro da pasta "ferramentas", são eles: HeapQmarking.txt e LinkedQmarking.txt, contêm as informações das ações realizadas com a implementação com heap e com a implementação com fila, respectivamente.
+
+## 🎱 Codificação de Huffman
+
+TODO
