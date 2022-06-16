@@ -24,3 +24,7 @@ Para o nosso experimento de complexidade de tempo comparamos as estruturas Fila 
 ## 🎱 Codificação de Huffman
 
 TODO
+
+## ⚡️ Testes unitários
+
+A framework utilizada para nossos testes unitários foi a [CuTest](https://github.com/ennorehling/cutest), simples, completa e fácil de utilizar. Os testes podem ser encontrados na subpasta "test" e são rodados ao incluir a flag "--debug" ao programa.
