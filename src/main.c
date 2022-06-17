@@ -88,8 +88,18 @@ int main(int argc, char *argv[])
             strtok(file_path,"\n");
             strtok(ouput_path,"\n");
 
-            FILE *f = fopen(file_path,"r");
-            compress(f,ouput_path);
+            if(strlen(file_path) == 1)
+            {
+                FILE *txt = fopen("basic.txt","r");
+                char output[8] = "basic";
+                compress(txt,output);
+                fclose(txt);
+            } else
+            {
+                FILE *f = fopen(file_path,"r");
+                compress(f,ouput_path);
+            }
+
         }
         else if(strcmp(opcao,"Descompactar\n") == 0 ||
         strcmp(opcao,"descompactar\n") == 0 ||
@@ -105,9 +115,18 @@ int main(int argc, char *argv[])
             strtok(file_path,"\n");
             strtok(ouput_path,"\n");
 
-            FILE *input = fopen(file_path,"r");
-            FILE *output = fopen(ouput_path,"w");
-            decompress(input,output);
+            if(strlen(file_path) == 1)
+            {
+                FILE *inp = fopen("basic.huff","r");
+                FILE *out = fopen("basic_c.txt","w");
+                decompress(inp,out);
+            } else
+            {
+                FILE *input = fopen(file_path,"r");
+                FILE *output = fopen(ouput_path,"w");
+                decompress(input,output);
+            }
+
         }
 
     }
