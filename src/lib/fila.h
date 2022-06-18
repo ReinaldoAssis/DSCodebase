@@ -3,7 +3,7 @@
 //implementação de fila de prioridade com linked list
 typedef struct queueItem 
 {
-    int value;
+    void* value;
     int priority;
     struct queueItem *next;
 } queueItem;

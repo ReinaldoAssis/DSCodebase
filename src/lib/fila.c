@@ -21,7 +21,8 @@ void enqueue_sh(priorityQueue **filapt, int v, int p, int *comparacoes)
     priorityQueue *fila = *filapt;
 
     queueItem *item = (queueItem *)malloc(sizeof(queueItem));
-    item->value = v;
+    int a = v;
+    item->value = &a;
     item->priority = p;
 
     if(fila->head == NULL)
