@@ -143,3 +143,45 @@ void min_heapify_huff(huffheapQueue *heap, int i)
         min_heapify_huff(heap,max);
     }
 }
+
+//ÁREA DE TESTE
+
+//implementação de fila de prioridade com linked list
+//fila sem heap
+// typedef struct huffpriorityQueue
+// {
+//     hufftree_node *head;
+// } huffpriorityQueue;
+
+// void huff_enqueue_sh(huffpriorityQueue *q, char value, int priority)
+// {
+
+//     huffpriorityQueue *fila = q;
+
+//     hufftree_node *item = (hufftree_node *)malloc(sizeof(hufftree_node));
+//     item->value = value;
+//     item->frequency = priority;
+
+//     if(fila->head == NULL)
+//     {
+//         fila->head = item;
+//         return;
+//     }
+
+//     if (fila->head != NULL && (priority > fila->head->frequency))
+//     {
+//         item->next = fila->head;
+//         fila->head = item;
+//     }
+//     else
+//     {
+//         queueItem *current = fila->head;
+//         while(current->next != NULL && current->next->priority > p)
+//         {
+//             current = current->next;
+//         }
+
+//         item->next = current->next;
+//         current->next = item;
+//     }
+// }

@@ -18,7 +18,7 @@ void intro()
     printf("              | |    \n");
     printf("              |_|    \n");
 
-    printf("\n- O segundo melhor compactador na seu máquina, provavelmente -  \n");
+    printf("\n- O segundo melhor compactador na sua máquina, provavelmente -  \n");
     printf("Grupo: {Reinaldo, Matheus, Guilherme, Fernanda}\n");
  
 }

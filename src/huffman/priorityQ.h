@@ -69,4 +69,19 @@ hufftree_node* huff_item_of(huffheapQueue *heap, int i);
 //swaps huffmantree nodes
 void swap(hufftree_node **x, hufftree_node **y);
 
+//TESTE - implementação sem heap
+
+//@param heap: priority queue
+//@param value: byte' value
+//@param priority: byte's frequency
+//void huff_enqueue_sh(huffheapQueue *heap, char value, int priority);
+
+//@param heap: priority queue
+//@param node: huffman tree node to be enqueued
+//void huff_enqueue_from_node_sh(huffheapQueue *heap, hufftree_node *node);
+
+//@param heap: priority queue
+//@return dequeued node
+//hufftree_node* huff_dequeue_sh(huffheapQueue *heap);
+
 #endif
