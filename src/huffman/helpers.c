@@ -105,14 +105,14 @@ void print_tree(hufftree_node *tree, char *path)
     unsigned char *codeleft = (unsigned char*)malloc(1000*sizeof(unsigned char));
     
     char *temp = (char*)malloc(4*sizeof(char));
-    sprintf(temp,"->%c",tree->left->value);
+    sprintf(temp,"->%c",((hufftree_node*)tree->left)->value);
     strcpy(codeleft,path);
     strcat(codeleft,temp);
     print_tree(tree->left,codeleft);
 
     //free(temp);
     char *temp2 = (char*)malloc(4*sizeof(char));
-    sprintf(temp2,"-|>%c",tree->right->value);
+    sprintf(temp2,"-|>%c",((hufftree_node*)tree->right)->value);
 
     unsigned char *coderight = (unsigned char*)malloc(1000*sizeof(unsigned char));
     strcpy(coderight,path);

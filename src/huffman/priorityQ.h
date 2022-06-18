@@ -8,8 +8,8 @@ typedef struct hufftree_node
 {
     long long int frequency;
     unsigned char value;
-    struct hufftree_node *left;
-    struct hufftree_node *right;
+    void* left;             //hufftree_node pointer
+    void* right;            //hufftree_node pointer
 
 } hufftree_node;
 
