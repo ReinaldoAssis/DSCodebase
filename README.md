@@ -23,7 +23,7 @@ Para o nosso experimento de complexidade de tempo comparamos as estruturas Fila 
 
 ## 🎱 Codificação de Huffman
 
-TODO
+A nossa implementação de huffman pode ser estudada através da nossa [documentação](https://github.com/ReinaldoAssis/DSCodebase/wiki/Codifica%C3%A7%C3%A3o-de-Huffman).
 
 ## ⚡️ Testes unitários
 
