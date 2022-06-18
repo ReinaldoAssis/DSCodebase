@@ -43,6 +43,30 @@ void test_enqueue(CuTest *tc)
     CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'A',huff_item_of(heap,1)->value);
 }
 
+void test_dequeue_multiple(CuTest *tc)
+{
+    huffheapQueue *heap = newHuffQueue();
+    
+    huff_enqueue(heap,'C',3);
+    huff_enqueue(heap,'E',5);
+    huff_enqueue(heap,'D',4);
+    huff_enqueue(heap,'G',7);
+    huff_enqueue(heap,'A',1);
+    huff_enqueue(heap,'B',2);
+    huff_enqueue(heap,'F',6);
+    huff_enqueue(heap,'H',8);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'A',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'B',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'C',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'D',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'E',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'F',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'G',huff_dequeue(heap)->value);
+    CuAssertIntEquals_Msg(tc,"Error, heap queue valor inesperado.",'H',huff_dequeue(heap)->value);
+
+
+}
+
 void test_hashtable(CuTest *tc)
 {
     hashtable *tb = newhashtable();
@@ -62,7 +86,7 @@ CuSuite *Test_Huffman()
     SUITE_ADD_TEST(suite,test_swap);
     SUITE_ADD_TEST(suite,test_enqueue);
     SUITE_ADD_TEST(suite,test_hashtable);
-    //SUITE_ADD_TEST(suite,test_dequeue_multiple);
+    SUITE_ADD_TEST(suite,test_dequeue_multiple);
     return suite;
 }
 
