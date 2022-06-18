@@ -196,6 +196,7 @@ void runQueueBenchmarking()
         for(int i=0; i<size; i++)
         {
             enqueue_sh(&linkedq,rand()%maxrand,rand()%maxrand,&comps);
+            //printf("value %d\n",*(int*)(linkedq->head->value));
         }
 
         char st[1000];
