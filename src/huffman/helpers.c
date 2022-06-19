@@ -138,9 +138,9 @@ void generate_bittable(hufftree_node *root, hashtable *h, bool flag, unsigned in
     {
         if(is_leaf(root))
         {
-            printf("putting %c = ",root->value);
-            bin(code,level-1);
-            printf(" | level %d\n",level);
+            //printf("putting %c = ",root->value);
+            //bin(code,level-1);
+            //printf(" | level %d\n",level);
             put_hashtable(h,root->value,root->frequency,code,level);
             return;
         }
@@ -484,19 +484,19 @@ void *compress(FILE *f, char *path)
     //DEBUG
     //print_huffqueue(heap);
 
-    printf("Finished bytes heap queue.\n");
+    //printf("Finished bytes heap queue.\n");
 
     hufftree_node *root = parse_to_tree(heap);
 
-    char printbuff[10000];
-    print_tree(root,printbuff);
+    //char printbuff[10000];
+    //print_tree(root,printbuff);
     
     //DEBUG
-    FILE *output = fopen("hufftreeoutput.txt","w");
-    write_hufftree(root,output);
-    fclose(output);
+    // FILE *output = fopen("hufftreeoutput.txt","w");
+    // write_hufftree(root,output);
+    // fclose(output);
 
-    printf("Finished parsing the huffman tree.\n");
+    //printf("Finished parsing the huffman tree.\n");
 
     long long int tree_size = 0;
     find_hufftree_size(root,&tree_size);
@@ -507,7 +507,7 @@ void *compress(FILE *f, char *path)
     //usar .fzip - apenas como demonstracao
     char extension[5] = ".huff";
 
-    printf("full caminho %s\n",path);
+    //printf("full caminho %s\n",path);
     strcat(path, extension);
 
     //resultado da compresssao
@@ -521,18 +521,18 @@ void *compress(FILE *f, char *path)
     generate_bittable(root,tb,true,buff,0);
     
     //DEBUG
-    print_hashtable(tb);
+    //print_hashtable(tb);
 
-    printf("The hashtable has been generated!\n");
+    //printf("The hashtable has been generated!\n");
 
     int bits = total_number_of_bits(tb);
     int nbytes = total_number_of_bytes(bits);
     trashlen = (nbytes*8)-bits; //convertemos bytes completos para bits e fazemos a diferença com oq temos
-    printf("tree size %d (%02X) trash size %d (%02X)\n",tree_size,tree_size,trashlen,trashlen);
+    //printf("tree size %d (%02X) trash size %d (%02X)\n",tree_size,tree_size,trashlen,trashlen);
 
     write_header(result,tree_size,trashlen,root);
 
-    printf("\n");
+    //printf("\n");
     // convert(f,result,tb,true,trashlen);
     convert(f,result,tb,false);
 

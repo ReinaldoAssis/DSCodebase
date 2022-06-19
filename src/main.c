@@ -129,6 +129,8 @@ int main(int argc, char *argv[])
 
         }
 
+        printf("\nPrograma executado.\n");
+
     }
 
     return 0;
